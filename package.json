@@ -1,0 +1,14 @@
+{
+  "name": "technicaldebt-me",
+  "version": "1.0.0",
+  "description": "technicaldebt.me — built with Eleventy + Contentful",
+  "scripts": {
+    "build": "eleventy",
+    "start": "eleventy --serve"
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "contentful": "^10.6.0",
+    "dotenv": "^16.4.5"
+  }
+}

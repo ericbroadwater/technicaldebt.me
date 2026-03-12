@@ -1,0 +1,17 @@
+# Environment variables — NEVER commit these
+.env
+.env.local
+.env.*
+
+# Eleventy build output
+_site/
+
+# Node modules
+node_modules/
+
+# macOS junk
+.DS_Store
+
+# Editor files
+.vscode/
+*.sublime-workspace
