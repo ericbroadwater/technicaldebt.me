@@ -1,9 +1,7 @@
-// _data/articles.js
-// Fetches all published articles from Contentful at build time.
-// Eleventy makes this available as `articles` in all templates.
-
-require("dotenv").config();
 const contentful = require("contentful");
+const { documentToHtmlString } = require("@contentful/rich-text-html-renderer");
+const { BLOCKS, INLINES } = require("@contentful/rich-text-types");
+require("dotenv").config();
 
 const client = contentful.createClient({
   space: process.env.CONTENTFUL_SPACE_ID || "noqo7wi3e5ju",
@@ -11,46 +9,70 @@ const client = contentful.createClient({
   environment: process.env.CONTENTFUL_ENVIRONMENT || "master",
 });
 
+const richTextOptions = {
+  renderNode: {
+    [BLOCKS.HEADING_1]: (node, next) =>
+      `<h1 class="article-h1">${next(node.content)}</h1>`,
+    [BLOCKS.HEADING_2]: (node, next) =>
+      `<h2 class="article-h2">${next(node.content)}</h2>`,
+    [BLOCKS.HEADING_3]: (node, next) =>
+      `<h3 class="article-h3">${next(node.content)}</h3>`,
+    [BLOCKS.PARAGRAPH]: (node, next) =>
+      `<p class="article-p">${next(node.content)}</p>`,
+    [BLOCKS.QUOTE]: (node, next) =>
+      `<blockquote class="article-blockquote">${next(node.content)}</blockquote>`,
+    [BLOCKS.HR]: () => `<hr class="article-rule" />`,
+    [BLOCKS.UL_LIST]: (node, next) =>
+      `<ul class="article-ul">${next(node.content)}</ul>`,
+    [BLOCKS.OL_LIST]: (node, next) =>
+      `<ol class="article-ol">${next(node.content)}</ol>`,
+    [BLOCKS.LIST_ITEM]: (node, next) =>
+      `<li>${next(node.content)}</li>`,
+    [INLINES.HYPERLINK]: (node, next) =>
+      `<a href="${node.data.uri}" class="article-link" target="_blank" rel="noopener">${next(node.content)}</a>`,
+  },
+};
+
 module.exports = async function () {
   try {
     const response = await client.getEntries({
       content_type: "article",
       order: "-fields.publishDate",
-      include: 2, // resolve linked entries (author, topics)
+      include: 2,
     });
 
     return response.items.map((item) => {
-      const fields = item.fields;
+      const f = item.fields;
 
       return {
         id: item.sys.id,
-        title: fields.title || "",
-        slug: fields.slug || "",
-        publishDate: fields.publishDate || null,
-        summary: fields.summary || "",
-        body: fields.body || null,
-        videoUrl: fields.videoUrl || null,
-        videoCaption: fields.videoCaption || null,
-        seoTitle: fields.seoTitle || fields.title || "",
-        metaDescription: fields.metaDescription || fields.summary || "",
-        ogImage: fields.ogImage?.fields?.file?.url
-          ? "https:" + fields.ogImage.fields.file.url
+        title: f.title || "",
+        slug: f.slug || "",
+        publishDate: f.publishDate || null,
+        summary: f.summary || "",
+        bodyHtml: f.body ? documentToHtmlString(f.body, richTextOptions) : "",
+        videoUrl: f.videoUrl || null,
+        videoCaption: f.videoCaption || null,
+        seoTitle: f.seoTitle || f.title || "",
+        metaDescription: f.metaDescription || f.summary || "",
+        ogImage: f.ogImage?.fields?.file?.url
+          ? "https:" + f.ogImage.fields.file.url
           : null,
-        author: fields.author?.fields
+        author: f.author?.fields
           ? {
-              name: fields.author.fields.name || "",
-              slug: fields.author.fields.slug || "",
-              bio: fields.author.fields.bio || "",
-              photo: fields.author.fields.photo?.fields?.file?.url
-                ? "https:" + fields.author.fields.photo.fields.file.url
+              name: f.author.fields.name || "",
+              slug: f.author.fields.slug || "",
+              bio: f.author.fields.bio || "",
+              photo: f.author.fields.photo?.fields?.file?.url
+                ? "https:" + f.author.fields.photo.fields.file.url
                 : null,
             }
           : null,
-        topics: (fields.topics || []).map((t) => ({
+        topics: (f.topics || []).map((t) => ({
           name: t.fields?.name || "",
           slug: t.fields?.slug || "",
         })),
-        url: `/articles/${fields.slug}/`,
+        url: `/writing/${f.slug}/`,
       };
     });
   } catch (err) {

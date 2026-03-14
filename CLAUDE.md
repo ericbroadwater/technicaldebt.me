@@ -119,24 +119,42 @@ Each panel has a `::after` pseudo-element creating a 1px vertical rule at the co
 
 ## Current State
 
-- Homepage index.html is live and confirmed working
-- First successful Eleventy build confirmed locally
-- Contentful connection working, `_site` folder generated
+- Homepage `index.html` is live and confirmed working
+- Eleventy v3 build confirmed working locally
+- Contentful connection working — Delivery API pulling live data
 - Full design system documented (this file)
-- article_inner_v1.html mockup built (single-column reading layout, ~720px, MCM nods via fixed bleed accent line + offset hero frame + drop cap)
-- Design direction confirmed for article inner pages
+- `writing/article.njk` — article inner page template complete (720px single-column, MCM aesthetic, rich text body, topics, author byline, video embed)
+- `_data/articles.js` — fetches articles with `include: 2`, resolves author + topics, renders rich text body to HTML via `@contentful/rich-text-html-renderer`
+- Homepage writing section updated to loop over live Contentful articles
+
+## Stack (Current)
+
+- **Eleventy:** v3.1.2 (upgraded from v2)
+- **Contentful SDK:** v11 (upgraded from v10)
+- **Rich Text:** `@contentful/rich-text-html-renderer` + `@contentful/rich-text-types`
+- **Env vars:** `CONTENTFUL_SPACE_ID`, `CONTENTFUL_ACCESS_TOKEN`, `CONTENTFUL_ENVIRONMENT`
+
+## Key File Locations
+
+| File | Purpose |
+|---|---|
+| `index.html` | Homepage — treated as Nunjucks template by Eleventy |
+| `writing/article.njk` | Article inner page — paginated from `articles` data |
+| `_data/articles.js` | Contentful fetch — returns `articles` array to all templates |
+| `.eleventy.js` | Eleventy config — filters, passthrough, ignores |
+| `.env` | Contentful credentials — gitignored, never commit |
+| `.gitignore` | Excludes `.env`, `_site/`, `node_modules/` |
 
 ## Roadmap (What's Next)
 
 1. ~~Eleventy repo setup~~ ✅
 2. ~~First Eleventy build~~ ✅
 3. ~~Design system documentation~~ ✅
-4. Iterate on article inner page template ← IN PROGRESS
-5. Update homepage writing section to pull from Contentful
-6. Convert article_inner mockup into Eleventy/Nunjucks template
-7. Set up GitHub Actions deploy pipeline
-8. Configure Contentful webhook to trigger rebuilds on publish
-9. Preview setup (likely Netlify free tier)
+4. ~~Article inner page template (Nunjucks)~~ ✅
+5. ~~Homepage writing section — live Contentful loop~~ ✅
+6. Set up GitHub Actions deploy pipeline ← NEXT
+7. Configure Contentful webhook to trigger rebuilds on publish
+8. Preview / staging setup (likely Netlify free tier)
 
 ## Workflow Rules — READ THESE CAREFULLY
 
