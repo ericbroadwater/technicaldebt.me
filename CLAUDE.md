@@ -14,7 +14,7 @@ Eric Broadwater — Senior Product Manager (Growth & SaaS Platforms), San Diego.
 - **CMS:** Contentful (free tier) — headless, content delivered via Delivery API
 - **SSG:** Eleventy — pulls from Contentful at build time, generates static HTML
 - **Hosting:** GitHub Pages (technicaldebt.me via Bluehost DNS)
-- **Deploy:** GitHub Actions (pipeline not yet configured)
+- **Deploy:** GitHub Actions (`.github/workflows/deploy.yml`) — triggers on every push to `main`
 - **Contentful Space ID:** noqo7wi3e5ju
 - **Contentful Environment:** master
 
@@ -125,7 +125,10 @@ Each panel has a `::after` pseudo-element creating a 1px vertical rule at the co
 - Full design system documented (this file)
 - `writing/article.njk` — article inner page template complete (720px single-column, MCM aesthetic, rich text body, topics, author byline, video embed)
 - `_data/articles.js` — fetches articles with `include: 2`, resolves author + topics, renders rich text body to HTML via `@contentful/rich-text-html-renderer`
-- Homepage writing section updated to loop over live Contentful articles
+- Homepage writing section updated to loop over live Contentful articles (Nunjucks tags in `index.html`, rendered at build time)
+- GitHub Actions deploy pipeline live — `.github/workflows/deploy.yml` triggers on push to `main`
+- Article pages confirmed live in production at `technicaldebt.me/writing/[slug]/`
+- Test article `the-internet-grew-up` currently published in Contentful — unpublish before going live for real
 
 ## Stack (Current)
 
@@ -152,17 +155,19 @@ Each panel has a `::after` pseudo-element creating a 1px vertical rule at the co
 3. ~~Design system documentation~~ ✅
 4. ~~Article inner page template (Nunjucks)~~ ✅
 5. ~~Homepage writing section — live Contentful loop~~ ✅
-6. Set up GitHub Actions deploy pipeline ← NEXT
-7. Configure Contentful webhook to trigger rebuilds on publish
-8. Preview / staging setup (likely Netlify free tier)
+6. ~~GitHub Actions deploy pipeline~~ ✅
+7. Write real articles in Contentful ← NEXT
+8. Update homepage writing section — swap "Coming soon" for live loop (already coded, just needs deploy)
+9. Configure Contentful webhook to trigger rebuilds on publish
+10. Preview / staging setup (likely Netlify free tier)
 
 ## Workflow Rules — READ THESE CAREFULLY
 
-### File Versioning (Non-Negotiable)
-Every HTML/CSS/JS output must be named with an incrementing version number (e.g., `homepage_v3.html`, `homepage_v4.html`). NEVER overwrite a confirmed-working version. Always start from the last explicitly confirmed-working version, rewrite the full file cleanly, and increment.
+### File Versioning
+Now that this is an Eleventy project with git, versioned filenames (homepage_v3.html etc.) are no longer used. Git history is the version control. Edit files directly.
 
-### No CLI Workflows
-Eric has a strong aversion to terminal/CLI work. Do not suggest CLI-based workflows as the primary path. The preferred workflow is: edit in Sublime Text (CMD+H for find-and-replace) → commit via GitHub Desktop.
+### CLI Workflows
+Eric uses Terminal for npm commands (`npm start`, `npm run build`), always from the project directory. Code edits happen in Claude Code Desktop, commits via GitHub Desktop.
 
 ### Cloudflare Corruption
 When producing HTML files, always check for and strip any `cfasync`, `cloudflare`, `cf_email__`, or `__cf_email__` content — these get injected silently and corrupt files.
