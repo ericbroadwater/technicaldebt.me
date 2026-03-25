@@ -667,7 +667,7 @@ footer {
       {% for article in articles %}
       <li>
         <a class="writing-item fade-up" href="{{ article.url }}">
-          <span class="writing-date">{{ article.publishDate | readableDate }}</span>
+          <span class="writing-date">{{ article.publishDate | dateDisplay }}</span>
           <span class="writing-title">{{ article.title }}</span>
         </a>
       </li>
