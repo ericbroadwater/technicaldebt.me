@@ -664,12 +664,14 @@ footer {
     <span class="section-eyebrow">Writing</span>
     <h2 class="section-heading fade-up">Release Notes<br><em>from a Digital Age</em></h2>
     <ul class="writing-list">
+      {% for article in articles %}
       <li>
-        <a class="writing-item fade-up" href="#">
-          <span class="writing-date">2026</span>
-          <span class="writing-title">Coming soon.</span>
+        <a class="writing-item fade-up" href="{{ article.url }}">
+          <span class="writing-date">{{ article.publishDate | readableDate }}</span>
+          <span class="writing-title">{{ article.title }}</span>
         </a>
       </li>
+      {% endfor %}
     </ul>
     <div class="bleed-label">The Writing</div>
   </div>
