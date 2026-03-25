@@ -136,6 +136,8 @@ Each panel has a `::after` pseudo-element creating a 1px vertical rule at the co
 - **Contentful SDK:** v11 (upgraded from v10)
 - **Rich Text:** `@contentful/rich-text-html-renderer` + `@contentful/rich-text-types`
 - **Env vars:** `CONTENTFUL_SPACE_ID`, `CONTENTFUL_ACCESS_TOKEN`, `CONTENTFUL_ENVIRONMENT`
+- **GTM:** Container `GTM-W43C7J9H` — installed in `index.html` and `writing/article.njk`
+- **GA4:** Measurement ID `G-HVDGYZEP64` — configured as a tag inside GTM (not a direct script)
 
 ## Key File Locations
 

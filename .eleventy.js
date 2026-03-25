@@ -11,6 +11,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("web-app-manifest-192x192.png");
   eleventyConfig.addPassthroughCopy("web-app-manifest-512x512.png");
   eleventyConfig.addPassthroughCopy("CNAME");
+  eleventyConfig.addPassthroughCopy("robots.txt");
 
   // Short date: "Mar 2026"
   eleventyConfig.addFilter("dateDisplay", (dateStr) => {
@@ -19,6 +20,11 @@ module.exports = function (eleventyConfig) {
       year: "numeric",
       month: "short",
     });
+  });
+
+  // ISO date for sitemap: "2026-03-25"
+  eleventyConfig.addFilter("todayISO", () => {
+    return new Date().toISOString().split("T")[0];
   });
 
   // Full date: "March 14, 2026"

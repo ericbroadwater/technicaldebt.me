@@ -17,12 +17,25 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-W43C7J9H');</script>
 <!-- End Google Tag Manager -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ article.seoTitle }} — Eric Broadwater</title>
-{% if article.metaDescription %}<meta name="description" content="{{ article.metaDescription }}">{% endif %}
-<meta property="og:title" content="{{ article.seoTitle }}">
-{% if article.metaDescription %}<meta property="og:description" content="{{ article.metaDescription }}">{% endif %}
+<title>{{ article.seoTitle }}</title>
+<meta name="description" content="{{ article.metaDescription }}">
+<link rel="canonical" href="https://technicaldebt.me/writing/{{ article.slug }}/">
+
+<!-- Open Graph -->
 <meta property="og:type" content="article">
-{% if article.ogImage %}<meta property="og:image" content="{{ article.ogImage }}">{% endif %}
+<meta property="og:title" content="{{ article.seoTitle }}">
+<meta property="og:description" content="{{ article.metaDescription }}">
+<meta property="og:url" content="https://technicaldebt.me/writing/{{ article.slug }}/">
+<meta property="og:image" content="{{ article.ogImage if article.ogImage else 'https://technicaldebt.me/images/egb-amsterdam.jpg' }}">
+<meta property="og:site_name" content="technicaldebt.me">
+<meta property="article:published_time" content="{{ article.publishDate }}">
+<meta property="article:author" content="Eric Broadwater">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ article.seoTitle }}">
+<meta name="twitter:description" content="{{ article.metaDescription }}">
+<meta name="twitter:image" content="{{ article.ogImage if article.ogImage else 'https://technicaldebt.me/images/egb-amsterdam.jpg' }}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-96x96.png" sizes="96x96" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
