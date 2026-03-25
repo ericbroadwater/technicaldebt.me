@@ -183,3 +183,9 @@ When editing files, produce complete clean rewrites rather than incremental patc
 - Double `Github/GitHub` in local folder path — do not rename
 - Persistent "DNS check in progress" warning in GitHub Pages = cosmetic, not a real issue
 - HTTPS enforcement requires CNAME record in Bluehost pointing `www` to `ericbroadwater.github.io` and removal of existing `www` A record
+
+## Session Sync
+- Notion Session_State: 31fef755-380b-8111-a030-ddd270427d55
+- At session start: optionally fetch Session_State from Notion for latest cross-surface context
+- At session end: update Session_State if meaningful progress was made
+- Session versioning: Session_M.DD.YY format, archived in Session_Archive/ subfolder
