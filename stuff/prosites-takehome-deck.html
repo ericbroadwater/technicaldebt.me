@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProSites — Growth Product Manager Candidate Exercise · Eric Broadwater</title>
+
+<!-- Fonts: Fraunces (display, warm distinctive serif) + IBM Plex Serif (body) + IBM Plex Mono (data) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,600&family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ===========================================
+   THEME TOKENS — change here, change everywhere
+   Paper & Ink × Swiss Report data-bones hybrid
+   =========================================== */
+:root {
+  --bg: #faf7f2;              /* warm cream paper */
+  --bg-tint: #f2ece2;          /* deeper cream for tinted panels */
+  --ink: #1a1817;              /* near-black text */
+  --ink-soft: #3a3532;         /* softened ink for body */
+  --muted: #6b6560;            /* metadata, folios */
+  --muted-soft: #9a938b;
+  --rule: #d4cec5;             /* thin rules */
+  --rule-strong: #1a1817;      /* structural rules */
+  --accent: #a6192e;           /* crimson — the one hot voice */
+  --accent-soft: #c44055;
+  --accent-tint: #f5e5e8;      /* accent wash for callouts */
+
+  /* Typography */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'IBM Plex Serif', Georgia, serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+
+  /* Fluid sizes */
+  --title-size: clamp(1.6rem, 4vw, 3.5rem);
+  --h2-size: clamp(1.2rem, 2.4vw, 2rem);
+  --h3-size: clamp(1rem, 1.6vw, 1.3rem);
+  --body-size: clamp(0.82rem, 1.1vw, 1rem);
+  --small-size: clamp(0.7rem, 0.95vw, 0.85rem);
+  --micro-size: clamp(0.6rem, 0.8vw, 0.72rem);
+
+  /* Spacing */
+  --slide-pad-x: clamp(2rem, 5vw, 5rem);
+  --slide-pad-y: clamp(1.5rem, 3.5vw, 3rem);
+  --gap-sm: clamp(0.4rem, 0.8vw, 0.75rem);
+  --gap-md: clamp(0.75rem, 1.5vw, 1.25rem);
+  --gap-lg: clamp(1.25rem, 2.5vw, 2rem);
+
+  /* Motion */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur: 0.6s;
+}
+
+/* ===========================================
+   VIEWPORT FITTING: MANDATORY BASE STYLES
+   =========================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; overflow-x: hidden; background: var(--bg); }
+html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  font-size: var(--body-size);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.slide {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: var(--slide-pad-y) var(--slide-pad-x);
+}
+
+/* Subtle paper grain on every slide */
+.slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(0,0,0,0.012) 1px, transparent 1px);
+  background-size: 3px 3px;
+  z-index: 0;
+}
+.slide > * { position: relative; z-index: 1; }
+
+/* Responsive breakpoints */
+@media (max-height: 700px) {
+  :root {
+    --slide-pad-y: clamp(1rem, 2.5vw, 2rem);
+    --slide-pad-x: clamp(1.5rem, 4vw, 3.5rem);
+    --title-size: clamp(1.3rem, 3.5vw, 2.5rem);
+    --h2-size: clamp(1rem, 2vw, 1.6rem);
+  }
+}
+@media (max-height: 600px) {
+  :root {
+    --slide-pad-y: clamp(0.75rem, 2vw, 1.5rem);
+    --title-size: clamp(1.1rem, 3vw, 2rem);
+    --body-size: clamp(0.72rem, 1vw, 0.9rem);
+  }
+  .nav-dots, .keyboard-hint, .decorative { display: none; }
+}
+@media (max-width: 700px) {
+  .two-col, .three-col, .role-grid { grid-template-columns: 1fr !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.2s !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ===========================================
+   SHARED SLIDE CHROME — masthead + footer
+   Every slide has the same frame for stand-alone reading
+   =========================================== */
+.masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 3px double var(--rule-strong);
+  padding-bottom: clamp(0.4rem, 0.8vw, 0.75rem);
+  margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+}
+.masthead-brand {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.9vw, 1.6rem);
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+.masthead-meta {
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: right;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: clamp(0.75rem, 1.5vw, 1.25rem);
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.footer .sig {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(0.8rem, 1.1vw, 1rem);
+  color: var(--ink);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ===========================================
+   QUESTION BLOCKQUOTE — Carol's rule
+   Every content slide shows the brief's question up top
+   =========================================== */
+.question {
+  border-left: 3px solid var(--accent);
+  padding: clamp(0.4rem, 0.8vw, 0.75rem) clamp(0.75rem, 1.2vw, 1rem);
+  background: var(--accent-tint);
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  font-size: clamp(0.72rem, 0.95vw, 0.85rem);
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+.question::before {
+  content: 'Question from brief';
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.3em;
+  font-weight: 500;
+}
+.question strong { font-weight: 600; color: var(--ink); }
+
+/* ===========================================
+   COMMON TYPOGRAPHY
+   =========================================== */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);
+  font-weight: 500;
+}
+h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--title-size);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
+h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--h2-size);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin-bottom: clamp(0.5rem, 1vw, 0.75rem);
+}
+h2 em { font-style: italic; color: var(--accent); font-weight: 600; }
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--h3-size);
+  line-height: 1.1;
+  margin-bottom: clamp(0.25rem, 0.5vw, 0.4rem);
+}
+
+p { line-height: 1.55; color: var(--ink-soft); }
+p + p { margin-top: clamp(0.4rem, 0.8vw, 0.6rem); }
+strong { font-weight: 600; color: var(--ink); }
+em.accent { font-style: normal; color: var(--accent); font-weight: 500; }
+
+/* Drop cap — used on slide 1 + 2 for rhythm */
+.dropcap::first-letter {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 0.85;
+  float: left;
+  padding: 0.15em 0.12em 0 0;
+  color: var(--accent);
+}
+
+/* ===========================================
+   LAYOUT UTILITIES
+   =========================================== */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap-lg); }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--gap-md); }
+.flex-grow { flex: 1; min-height: 0; }
+
+/* Content body sits in the middle — grows to fill space between masthead/footer */
+.body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ===========================================
+   DATA TREATMENT (A's bones in B's body)
+   Mono numbers + rule lines for data-dense slides
+   =========================================== */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: var(--gap-lg);
+  padding-top: clamp(0.75rem, 1.5vw, 1.25rem);
+  border-top: 1px solid var(--rule-strong);
+}
+.stat { display: flex; flex-direction: column; }
+.stat-num {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: clamp(1.2rem, 2.1vw, 1.85rem);
+  color: var(--ink);
+  line-height: 1;
+}
+.stat-num em { font-style: normal; color: var(--accent); }
+.stat-num .pct { color: var(--accent); }
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: clamp(0.25rem, 0.5vw, 0.4rem);
+}
+
+/* Pull quote — editorial flourish */
+.pull-quote {
+  border-left: 3px solid var(--accent);
+  padding: clamp(0.75rem, 1.5vw, 1.25rem) clamp(1rem, 2vw, 1.5rem);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(0.95rem, 1.4vw, 1.25rem);
+  line-height: 1.3;
+  color: var(--ink);
+  background: var(--bg-tint);
+}
+.pull-quote .stat {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.25rem;
+  line-height: 1;
+}
+.pull-quote .attribution {
+  display: block;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: var(--micro-size);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+.pull-quote .attribution::before { content: '— '; }
+
+/* Lists with editorial markers */
+ul.editorial {
+  list-style: none;
+  padding: 0;
+}
+ul.editorial li {
+  padding: clamp(0.3rem, 0.6vw, 0.45rem) 0 clamp(0.3rem, 0.6vw, 0.45rem) clamp(1.2rem, 2vw, 1.6rem);
+  position: relative;
+  border-bottom: 1px solid var(--rule);
+  font-size: var(--body-size);
+  line-height: 1.45;
+}
+ul.editorial li:last-child { border-bottom: 0; }
+ul.editorial li::before {
+  content: counter(editorial) '.';
+  counter-increment: editorial;
+  position: absolute;
+  left: 0;
+  top: clamp(0.3rem, 0.6vw, 0.45rem);
+  font-family: var(--font-mono);
+  font-size: var(--small-size);
+  color: var(--accent);
+  font-weight: 600;
+}
+ul.editorial { counter-reset: editorial; }
+
+/* Simple bullets */
+ul.simple { list-style: none; padding: 0; }
+ul.simple li {
+  padding: clamp(0.2rem, 0.45vw, 0.4rem) 0 clamp(0.2rem, 0.45vw, 0.4rem) clamp(0.9rem, 1.4vw, 1.1rem);
+  position: relative;
+  font-size: var(--body-size);
+  line-height: 1.5;
+}
+ul.simple li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: calc(0.75em + clamp(0.2rem, 0.45vw, 0.4rem));
+  width: 6px;
+  height: 1px;
+  background: var(--accent);
+}
+ul.simple li strong { color: var(--ink); font-weight: 600; }
+
+/* ===========================================
+   CARDS
+   =========================================== */
+.card {
+  background: var(--bg-tint);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: clamp(0.6rem, 1.2vw, 1rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.25rem, 0.5vw, 0.4rem);
+}
+.card-label {
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.card-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  line-height: 1.1;
+  color: var(--ink);
+}
+.card-num {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 1.6vw, 1.35rem);
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1;
+}
+.card p, .card .body-txt {
+  font-size: clamp(0.72rem, 0.95vw, 0.85rem);
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+/* ===========================================
+   TABLES
+   =========================================== */
+table.editorial {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: clamp(0.7rem, 0.95vw, 0.85rem);
+}
+table.editorial th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 2px solid var(--rule-strong);
+  padding: clamp(0.35rem, 0.7vw, 0.5rem) clamp(0.3rem, 0.6vw, 0.5rem);
+  font-weight: 500;
+  vertical-align: bottom;
+}
+table.editorial td {
+  border-bottom: 1px solid var(--rule);
+  padding: clamp(0.3rem, 0.6vw, 0.45rem) clamp(0.3rem, 0.6vw, 0.5rem);
+  vertical-align: top;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+table.editorial td:first-child {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-weight: 600;
+  width: 2em;
+}
+table.editorial td strong { color: var(--ink); }
+
+/* Title-slide-specific */
+.title-slide h1 {
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+  margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+.title-slide .deck {
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  line-height: 1.55;
+  max-width: 42em;
+  color: var(--ink-soft);
+}
+
+/* ===========================================
+   REVEAL ANIMATIONS
+   =========================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+.slide.visible .reveal:nth-child(1) { transition-delay: 0.1s; }
+.slide.visible .reveal:nth-child(2) { transition-delay: 0.2s; }
+.slide.visible .reveal:nth-child(3) { transition-delay: 0.3s; }
+.slide.visible .reveal:nth-child(4) { transition-delay: 0.4s; }
+.slide.visible .reveal:nth-child(5) { transition-delay: 0.5s; }
+
+/* ===========================================
+   NAV DOTS + PROGRESS
+   =========================================== */
+.progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: var(--accent);
+  z-index: 100;
+  width: 0;
+  transition: width 0.2s linear;
+}
+.nav-dots {
+  position: fixed;
+  right: clamp(0.75rem, 1.5vw, 1.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 0.8vw, 0.6rem);
+  z-index: 100;
+}
+.nav-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--rule);
+  border: 0;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.nav-dot.active { background: var(--accent); transform: scale(1.4); }
+.nav-dot:hover { background: var(--accent-soft); }
+@media (max-width: 900px) { .nav-dots { display: none; } }
+
+/* ===========================================
+   INLINE EDITING (opt-in)
+   =========================================== */
+.edit-hotzone {
+  position: fixed; top: 0; left: 0;
+  width: 80px; height: 80px;
+  z-index: 10000;
+  cursor: pointer;
+}
+.edit-toggle {
+  position: fixed;
+  top: 16px; left: 16px;
+  z-index: 10001;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--rule-strong);
+  background: var(--bg);
+  font-size: 18px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.edit-toggle.show, .edit-toggle.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.edit-toggle.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+.edit-bar {
+  position: fixed;
+  bottom: 16px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 10001;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  display: none;
+  gap: 14px;
+  align-items: center;
+}
+.edit-bar.show { display: flex; }
+.edit-bar button {
+  background: transparent;
+  color: var(--bg);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.edit-bar button:hover { background: rgba(255,255,255,0.1); }
+[contenteditable="true"] {
+  outline: 2px dashed var(--accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+[contenteditable="true"]:focus {
+  outline-style: solid;
+  background: var(--accent-tint);
+}
+
+/* ===========================================
+   SLIDE-SPECIFIC TREATMENTS
+   =========================================== */
+
+/* Slide 1 — Title */
+.slide-title .hero {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 2.2fr 1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+.slide-title .hero-main { min-width: 0; }
+.slide-title .toc {
+  font-family: var(--font-mono);
+  font-size: var(--small-size);
+  color: var(--muted);
+  line-height: 1.9;
+}
+.slide-title .toc-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--rule);
+  padding: 0.15em 0;
+}
+.slide-title .toc-item span:first-child { color: var(--ink); }
+.slide-title .toc-label {
+  font-size: var(--micro-size);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 0.6em;
+  border-bottom: 2px solid var(--rule-strong);
+  padding-bottom: 0.3em;
+  display: block;
+}
+
+/* Slide 2 — Executive Summary */
+.slide-exec .hero {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 2.3fr) 1fr;
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: center;
+}
+.slide-exec .hero-main { min-width: 0; }
+
+/* Slide 3 — Web architecture */
+.slide-1a .arch-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--gap-md);
+  flex: 1;
+  min-height: 0;
+}
+.slide-1a .arch-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+.slide-1a .arch-col h3 {
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 0.3em;
+  margin-bottom: 0.2em;
+}
+.slide-1a .arch-col .step {
+  font-family: var(--font-body);
+  font-size: clamp(0.72rem, 0.95vw, 0.85rem);
+  line-height: 1.4;
+  color: var(--ink-soft);
+  padding-left: 1.2em;
+  position: relative;
+}
+.slide-1a .arch-col .step::before {
+  content: counter(step, decimal-leading-zero);
+  counter-increment: step;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  color: var(--accent);
+  font-weight: 600;
+}
+.slide-1a .arch-col { counter-reset: step; }
+.slide-1a .persists {
+  margin-top: var(--gap-md);
+  padding: clamp(0.5rem, 1vw, 0.85rem);
+  background: var(--bg-tint);
+  border-left: 3px solid var(--accent);
+  font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+  line-height: 1.5;
+}
+.slide-1a .persists strong { display: block; margin-bottom: 0.2em; color: var(--ink); }
+.slide-1a .persists .mono { font-family: var(--font-mono); font-size: 0.95em; color: var(--ink-soft); }
+
+/* Slide 5 — SEO table */
+.slide-1c .body { overflow: hidden; }
+
+/* Slide 6 — Patterns (stacked: patterns → 3-col picks → look-first) */
+.slide-2a .top-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  min-height: 0;
+  overflow: hidden;
+}
+.slide-2a .top-grid ul.editorial { margin: 0; }
+.slide-2a .top-grid ul.editorial li {
+  padding: clamp(0.25rem, 0.5vw, 0.4rem) 0 clamp(0.25rem, 0.5vw, 0.4rem) clamp(1.6rem, 2.2vw, 2rem);
+  font-size: clamp(0.72rem, 0.92vw, 0.82rem);
+  line-height: 1.4;
+}
+.slide-2a .picks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap-sm);
+}
+.slide-2a .picks .card {
+  padding: clamp(0.5rem, 0.9vw, 0.75rem) clamp(0.65rem, 1.1vw, 0.9rem);
+  gap: clamp(0.2rem, 0.4vw, 0.35rem);
+}
+.slide-2a .picks .card-title { font-size: clamp(0.9rem, 1.2vw, 1.05rem); }
+.slide-2a .picks .card-num { font-size: clamp(0.95rem, 1.45vw, 1.2rem); }
+.slide-2a .picks .body-txt { font-size: clamp(0.68rem, 0.85vw, 0.78rem); line-height: 1.4; }
+
+.slide-2a .look-first {
+  margin-top: var(--gap-sm);
+  padding: clamp(0.5rem, 0.9vw, 0.75rem) clamp(0.75rem, 1.2vw, 1rem);
+  background: var(--bg-tint);
+  border-top: 2px solid var(--rule-strong);
+  font-size: clamp(0.7rem, 0.88vw, 0.8rem);
+  line-height: 1.4;
+}
+.slide-2a .look-first .look-first-head {
+  margin-bottom: 0.4em;
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.slide-2a .look-first p {
+  margin: 0.15em 0;
+  padding-left: 1.6em;
+  text-indent: -1.6em;
+}
+.slide-2a .look-first .num {
+  display: inline-block;
+  width: 1.4em;
+  text-indent: 0;
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Slide 7 — Bets */
+.slide-2b .bets-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: var(--gap-lg);
+  flex: 1;
+  min-height: 0;
+}
+.slide-2b .bet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+  padding: clamp(0.75rem, 1.5vw, 1.25rem);
+  border-radius: 4px;
+}
+.slide-2b .bet.lead {
+  background: var(--accent-tint);
+  border: 1px solid var(--accent);
+}
+.slide-2b .bet.runner {
+  background: var(--bg-tint);
+  border: 1px solid var(--rule);
+}
+.slide-2b .bet-label {
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.slide-2b .bet.lead .bet-label { color: var(--accent); }
+.slide-2b .bet.runner .bet-label { color: var(--muted); }
+.slide-2b .bet h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
+  font-weight: 600;
+  line-height: 1.15;
+}
+.slide-2b .field {
+  display: grid;
+  grid-template-columns: clamp(6rem, 10vw, 8rem) 1fr;
+  gap: clamp(0.5rem, 1vw, 0.75rem);
+  font-size: clamp(0.7rem, 0.9vw, 0.82rem);
+  line-height: 1.45;
+  padding: 0.2em 0;
+  border-bottom: 1px solid var(--rule);
+}
+.slide-2b .field:last-child { border-bottom: 0; }
+.slide-2b .field-label {
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 500;
+  padding-top: 0.15em;
+}
+.slide-2b .field-val { color: var(--ink-soft); }
+.slide-2b .field-val strong { color: var(--ink); font-weight: 600; }
+
+/* Slide 8 — Process */
+.slide-3a .process-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: var(--gap-lg);
+  flex: 1;
+  min-height: 0;
+}
+.slide-3a .process-list .proc-item {
+  padding: clamp(0.3rem, 0.6vw, 0.5rem) 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: clamp(0.72rem, 0.95vw, 0.85rem);
+  line-height: 1.45;
+}
+.slide-3a .process-list .proc-item:last-child { border-bottom: 0; }
+.slide-3a .proc-label {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-right: 0.75em;
+}
+.slide-3a .refs {
+  background: var(--bg-tint);
+  padding: clamp(0.75rem, 1.2vw, 1rem);
+  border-top: 3px solid var(--rule-strong);
+}
+.slide-3a .refs-label {
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: clamp(0.4rem, 0.8vw, 0.6rem);
+  font-weight: 500;
+}
+.slide-3a .refs ol {
+  list-style: none;
+  counter-reset: ref;
+  padding: 0;
+}
+.slide-3a .refs li {
+  counter-increment: ref;
+  padding: clamp(0.3rem, 0.6vw, 0.45rem) 0 clamp(0.3rem, 0.6vw, 0.45rem) 1.5em;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+  line-height: 1.4;
+}
+.slide-3a .refs li:last-child { border-bottom: 0; }
+.slide-3a .refs li::before {
+  content: counter(ref);
+  position: absolute;
+  left: 0;
+  top: clamp(0.3rem, 0.6vw, 0.45rem);
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: var(--small-size);
+}
+.slide-3a .refs li a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 2px;
+  font-weight: 600;
+  font-style: italic;
+  font-family: var(--font-display);
+}
+.slide-3a .refs li a:hover { color: var(--accent); }
+.slide-3a .refs li .desc { color: var(--muted); font-family: var(--font-body); font-style: normal; }
+
+/* Slide 9 — Cadence */
+.slide-3b table.cadence th:nth-child(1) { width: 14%; }
+.slide-3b table.cadence th:nth-child(2) { width: 14%; }
+.slide-3b table.cadence th:nth-child(3) { width: 18%; }
+.slide-3b table.cadence th:nth-child(4) { width: 24%; }
+.slide-3b .cost-note {
+  margin-top: var(--gap-md);
+  padding: clamp(0.5rem, 1vw, 0.85rem) clamp(0.75rem, 1.2vw, 1rem);
+  background: var(--bg-tint);
+  border-left: 3px solid var(--accent);
+  font-size: clamp(0.72rem, 0.95vw, 0.85rem);
+  line-height: 1.5;
+  font-style: italic;
+  font-family: var(--font-display);
+}
+.slide-3b .cost-note .num {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Slide 10 — Tools */
+.slide-3c .tool-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap-md);
+  flex: 1;
+  min-height: 0;
+}
+.slide-3c .tool {
+  padding: clamp(0.6rem, 1vw, 0.85rem) clamp(0.75rem, 1.2vw, 1rem);
+  background: var(--bg-tint);
+  border-left: 3px solid var(--accent);
+  font-size: clamp(0.72rem, 0.95vw, 0.83rem);
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+.slide-3c .tool-label {
+  font-family: var(--font-mono);
+  font-size: var(--micro-size);
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.slide-3c .tool-body { color: var(--ink-soft); }
+.slide-3c .tool-body strong { color: var(--ink); font-weight: 600; }
+
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Inline edit hotzone + toggle -->
+<div class="edit-hotzone" id="editHotzone" title="Edit mode"></div>
+<button class="edit-toggle" id="editToggle" title="Toggle edit mode (E)">✎</button>
+<div class="edit-bar" id="editBar">
+  <span>Edit mode · click any text · Ctrl+S to save</span>
+  <button id="saveBtn">Save</button>
+  <button id="exportBtn">Export HTML</button>
+  <button id="exitBtn">Exit</button>
+</div>
+
+<!-- Nav dots -->
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+<!-- ============================================================
+     SLIDE 01 — TITLE
+     Sets the frame: exercise name, author, date, thesis in miniature,
+     table of contents so the CMO can see the shape of the response.
+     ============================================================ -->
+<section class="slide slide-title" data-title="Title">
+  <div class="masthead reveal">
+    <div class="masthead-brand">The Homepage Thesis</div>
+    <div class="masthead-meta">
+      <div>No. 01 · Candidate Exercise</div>
+      <div>April 2026 · ProSites GPM</div>
+    </div>
+  </div>
+
+  <div class="body hero">
+    <div class="hero-main">
+      <div class="eyebrow reveal">Growth Product Manager · Candidate Exercise · Response</div>
+      <h1 class="reveal">A bet on <em>one page,</em><br>backed by the data.</h1>
+      <p class="deck reveal" style="margin-top: clamp(1rem, 2vw, 1.5rem)">
+        The path from <strong>8%</strong> to <strong>10% MQL→Paid</strong> runs through the Homepage. What follows is the architecture behind that bet, the operating model that keeps it disciplined, and the checklist that ships it safely.
+      </p>
+    </div>
+
+    <div class="toc reveal">
+      <span class="toc-label">Contents</span>
+      <div class="toc-item"><span>1A · Web Architecture</span><span>03</span></div>
+      <div class="toc-item"><span>1B · Safe Rollout</span><span>04</span></div>
+      <div class="toc-item"><span>1C · SEO Checklist</span><span>05</span></div>
+      <div class="toc-item"><span>2A · Patterns</span><span>06</span></div>
+      <div class="toc-item"><span>2B · Bets</span><span>07</span></div>
+      <div class="toc-item"><span>3A · Process</span><span>08</span></div>
+      <div class="toc-item"><span>3B · Cadence</span><span>09</span></div>
+      <div class="toc-item"><span>3C · Tooling</span><span>10</span></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="sig">Eric Broadwater</span>
+    <span>01 / 10</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 02 — EXECUTIVE SUMMARY
+     The thesis in full + 3.3× pullquote + data strip
+     ============================================================ -->
+<section class="slide slide-exec" data-title="Executive Summary">
+  <div class="masthead reveal">
+    <div class="masthead-brand">Executive Summary</div>
+    <div class="masthead-meta">
+      <div>Response to Candidate Exercise</div>
+      <div>Thesis · Data · Direction</div>
+    </div>
+  </div>
+
+  <div class="body hero">
+    <div class="hero-main">
+      <div class="eyebrow reveal">Thesis</div>
+      <h2 class="reveal" style="margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem)">The 8→10% goal is a <em>Homepage</em> problem.</h2>
+      <p class="dropcap reveal" style="font-size: clamp(0.9rem, 1.25vw, 1.1rem); line-height: 1.55; color: var(--ink-soft); margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem)">
+        The highest-leverage path from 8% to 10% MQL→Paid runs through one page. With 27,435 sessions converting at 1.68%, the Homepage is the single largest untapped conversion pool on the site. Premium Content &mdash; comparable traffic volume converting at 5.62% &mdash; is internal proof that this audience converts when the page captures intent correctly.
+      </p>
+      <p class="reveal" style="font-size: clamp(0.9rem, 1.25vw, 1.1rem); line-height: 1.55; color: var(--ink-soft)">
+        <strong>The lead bet:</strong> transplant what is working on Premium Content to the Homepage, tested safely via split URL. Every subsequent answer below is in service of that bet or the operating model that keeps it from becoming a one-off.
+      </p>
+
+      <div class="stat-strip reveal" style="margin-top: clamp(1rem, 2vw, 1.5rem)">
+        <div class="stat">
+          <div class="stat-num">27,435</div>
+          <div class="stat-label">Homepage sessions</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num"><span class="pct">1.68%</span></div>
+          <div class="stat-label">Current MQL rate</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num"><span class="pct">5.62%</span></div>
+          <div class="stat-label">Premium Content rate</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">+360</div>
+          <div class="stat-label">MQLs at 3.0%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pull-quote reveal">
+      <span class="stat">3.3×</span>
+      Premium Content converts <em>three-and-a-third times</em> higher than the Homepage on equivalent traffic.
+      <span class="attribution">Jan 2025 – Feb 2026 · CPASS</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="sig">Eric Broadwater</span>
+    <span>02 / 10</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 03 — PART 1A: WEB ARCHITECTURE
+     Three-column flow: Render / CTA / Processing
+     Data-persistence strip + role requirements under
+     ============================================================ -->
+<section class="slide slide-1a" data-title="1A · Web Architecture">
+  <div class="masthead reveal">
+    <div class="masthead-brand">Part 1A <em style="font-style: italic; color: var(--accent)">·</em> Web Architecture</div>
+    <div class="masthead-meta">
+      <div>Page → CTA → MQL → Salesforce</div>
+      <div>Page chosen · Homepage</div>
+    </div>
+  </div>
+
+  <div class="question reveal">
+    Pick one high-intent page and explain how the experience should work from page request → render → CTA/form → MQL → Salesforce. Cover cookies, browser-side vs. server-side, rendering, FE/BE responsibilities, where HTML/PHP/.NET fit, <strong>what data must persist</strong>, and the requirements you would give FE dev, BE dev, and IT.
+  </div>
+
+  <div class="body">
+    <div class="arch-grid reveal">
+      <div class="arch-col">
+        <h3>① Render · Browser-side</h3>
+        <div class="step">Request <code style="font-family:var(--font-mono); font-size:0.9em;">prosites.com/</code> → DNS → CDN (IT-owned) → origin (WordPress, PHP-rendered).</div>
+        <div class="step">HTML + critical CSS server-rendered; non-critical JS and web fonts deferred to protect LCP.</div>
+        <div class="step">First-party cookie set: session ID + UTM captured from URL, mirrored to <code style="font-family:var(--font-mono); font-size:0.9em;">localStorage</code> as fallback.</div>
+      </div>
+
+      <div class="arch-col">
+        <h3>② CTA · Browser-side</h3>
+        <div class="step">User clicks <strong>Request Demo</strong> or <strong>Start Free Trial</strong>. HTML form, client-side JS validation for UX.</div>
+        <div class="step">Form POST to first-party subdomain (<code style="font-family:var(--font-mono); font-size:0.9em;">track.prosites.com</code>) — bypasses most ad blockers.</div>
+        <div class="step">Server-side re-validation on submit (never trust the client).</div>
+      </div>
+
+      <div class="arch-col">
+        <h3>③ Processing · Back-end</h3>
+        <div class="step">PHP endpoint writes lead to internal DB; server-to-server call to Salesforce REST API via OAuth token (never client-exposed).</div>
+        <div class="step">Same endpoint fires server-side GA4 event via Measurement Protocol — the authoritative MQL count lives here, not in client-side <code style="font-family:var(--font-mono); font-size:0.9em;">gtag</code>.</div>
+        <div class="step">Response returns <code style="font-family:var(--font-mono); font-size:0.9em;">lead_id</code>, persisted in cookie for dedupe + return-visit attribution. .NET stack follows same contract, different runtime.</div>
+      </div>
+    </div>
+
+    <div class="persists reveal">
+      <strong>Data that must persist across the flow</strong>
+      <span class="mono">session ID · UTM source/medium/campaign · first-touch timestamp · form field values · GA4 client_id · lead_id post-submit · Salesforce contact ID</span>
+      — these are the join keys for closed-loop attribution from visit through paid conversion.
+    </div>
+
+    <div class="three-col reveal" style="margin-top: var(--gap-md)">
+      <div>
+        <div class="card-label">Front-end dev</div>
+        <div class="body-txt" style="font-size: clamp(0.7rem, 0.9vw, 0.8rem); line-height: 1.45; color: var(--ink-soft); margin-top: 0.3em">Form semantics, WCAG CTA accessibility, LCP optimization (images, fonts, critical CSS), client-side event wiring, cookie-consent UX.</div>
+      </div>
+      <div>
+        <div class="card-label">Back-end dev</div>
+        <div class="body-txt" style="font-size: clamp(0.7rem, 0.9vw, 0.8rem); line-height: 1.45; color: var(--ink-soft); margin-top: 0.3em">Server-side form validation, Salesforce REST integration with retry + idempotency, GA4 Measurement Protocol event emission, structured error logging.</div>
+      </div>
+      <div>
+        <div class="card-label">IT</div>
+        <div class="body-txt" style="font-size: clamp(0.7rem, 0.9vw, 0.8rem); line-height: 1.45; color: var(--ink-soft); margin-top: 0.3em">First-party tracking subdomain DNS + SSL, CDN cache rules excluding form endpoints, WAF rules that do not break POSTs, cookie-consent infrastructure.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="sig">Eric Broadwater</span>
+    <span>03 / 10</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 04 — PART 1B: SAFE ROLLOUT
+     ============================================================ -->
+<section class="slide slide-1b" data-title="1B · Safe Rollout">
+  <div class="masthead reveal">
+    <div class="masthead-brand">Part 1B <em style="font-style: italic; color: var(--accent)">·</em> Safe Rollout</div>
+    <div class="masthead-meta">
+      <div>New funnel · Launch discipline</div>
+      <div>Split URL · Guardrails · Rollback</div>
+    </div>
+  </div>
+
+  <div class="question reveal">
+    With the goal of launching a new website/funnel that converts higher than the current one, explain how you would <strong>safely test and roll out</strong> the new experience. Address rollout approach, success and guardrail metrics, data-quality checks before and after launch, rollback plan, and SEO migration basics.
+  </div>
+
+  <div class="body">
+    <div class="two-col" style="flex: 1; min-height: 0">
+      <div class="reveal">
+        <ul class="simple">
+          <li><strong>Rollout approach.</strong> Server-side <strong>split URL test</strong>, 50/50 stratified by source (organic / paid / direct). Funnel redesigns touch URL structure — safer to route at the edge than swap components in place. Feature flags inside the new funnel allow CTA iteration without redeploy.</li>
+          <li><strong>Success metrics (ranked).</strong> MQL rate (primary); demo rate and trial rate (secondary — mix, not just volume). Read at statistical significance, not first positive signal.</li>
+          <li><strong>Guardrail metrics (must not regress).</strong> The brief's three — support tickets per new customer, early churn &lt; 60d, average discounting — instrumented <em class="accent">before</em> launch. Plus bounce rate and trial→paid conversion downstream.</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <ul class="simple">
+          <li><strong>Data-quality checks, <em class="accent">before</em> launch.</strong> 100 synthetic form submissions in staging; confirm each lands in GA4 and Salesforce with matching IDs. 404 sweep on internal links. Consent-flow QA. UTM persistence across funnel.</li>
+          <li><strong>Data-quality checks, <em class="accent">first 48h</em> post-launch.</strong> GA4 event volume vs. baseline (&gt;10% drift = flag); form-to-SFDC parity rate (must be ≥99%); form-error rate in server logs.</li>
+          <li><strong>Rollback plan.</strong> Edge routing revert — 10-minute change. Old funnel kept warm for 30 days. Triggers: guardrail breach, or SFDC handoff drops below 99%.</li>
+          <li><strong>SEO migration basics.</strong> Preserve URL where possible. If URL changes: 301 map live <em class="accent">before</em> DNS cutover, internal links updated site-wide, canonicals preserved, sitemap regenerated + resubmitted. Full checklist · Part 1C.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="sig">Eric Broadwater</span>
+    <span>04 / 10</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 05 — PART 1C: TECH SEO CHECKLIST
+     ============================================================ -->
+<section class="slide slide-1c" data-title="1C · SEO Checklist">
+  <div class="masthead reveal">
+    <div class="masthead-brand">Part 1C <em style="font-style: italic; color: var(--accent)">·</em> Launch Checklist</div>
+    <div class="masthead-meta">
+      <div>Tech SEO + launch readiness</div>
+      <div>Page chosen · Premium Content</div>
+    </div>
+  </div>
+
+  <div class="question reveal">
+    Assume one of the pages will be relaunched, consolidated, or migrated. Describe the <strong>minimum technical SEO and launch-readiness checklist</strong> you would require before go-live — redirects, canonicals, robots/indexation, sitemap, internal linking, renderability, performance — and what you would monitor in the first 2 weeks. Call out direction to IT, back-end, or front-end. <em>Premium Content chosen: highest MQL contribution (~1,588/yr), scariest migration = sharpest proof of rigor.</em>
+  </div>
+
+  <div class="body">
+    <table class="editorial reveal">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Item</th>
+          <th>Owner</th>
+          <th>Pre-launch gate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>301 redirect map</strong>, old→new URLs, maintained 12+ months</td>
+          <td>Back-end (.NET web.config / PHP .htaccess); IT if CDN-layer</td>
+          <td>All old URLs verified 301 via <code style="font-family:var(--font-mono)">curl</code> before DNS cut</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>Canonical tags</strong> on every variant, pointing to new URL</td>
+          <td>Front-end (template) + Back-end (dynamic)</td>
+          <td>No canonicals pointing to staging</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>Robots / indexation:</strong> <code style="font-family:var(--font-mono)">noindex</code> removed from prod; <code style="font-family:var(--font-mono)">robots.txt</code> correct</td>
+          <td>Front-end + Back-end</td>
+          <td>GSC URL Inspection returns "Indexable"</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>Sitemap</strong> regenerated; submitted to GSC + Bing; old sitemap kept 30 days</td>
+          <td>Back-end + SEO specialist</td>
+          <td>New sitemap live + submitted</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>Internal links</strong> updated site-wide (no reliance on 301s for internal traffic)</td>
+          <td>Front-end + content team</td>
+          <td>Screaming Frog crawl: zero old URLs in internal links</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><strong>Renderability:</strong> rendered HTML contains H1 + CTAs</td>
+          <td>Front-end</td>
+          <td>GSC URL Inspection render matches user view</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><strong>Core Web Vitals</strong> at 75% of visits · LCP ≤ 2.5s · INP ≤ 200ms · CLS ≤ 0.1</td>
+          <td>Front-end + IT (CDN)</td>
+          <td>PageSpeed Insights + CrUX field data all green</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><strong>Structured data</strong> preserved (Service, FAQ schema — feeds AI Overviews)</td>
+          <td>Front-end</td>
+          <td>Rich Results Test passes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="persists reveal" style="margin-top: var(--gap-md)">
+      <strong>First 2 weeks post-launch monitoring</strong>
+      <span class="mono">daily:</span> GSC indexing coverage, crawl errors, 404 log, form-submission parity vs. baseline ·
+      <span class="mono">weekly:</span> target-keyword rankings, impressions/CTR/position, referral traffic, CWV field data ·
+      <span class="mono">escalation:</span> organic-session drop &gt;20% vs. same weekday in prior 4 weeks = rollback consideration.
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="sig">Eric Broadwater</span>
+    <span>05 / 10</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 06 — PART 2A: PATTERNS
+     5 patterns (numbered editorial list) + 3 picks (cards) + where-to-look footer
+     ============================================================ -->
+<section class="slide slide-2a" data-title="2A · Patterns">
+  <div class="masthead reveal">
+    <div class="masthead-brand">Part 2A <em style="font-style: italic; color: var(--accent)">·</em> Patterns in the Data</div>
+    <div class="masthead-meta">
+      <div>Jan 2025 – Feb 2026 · CPASS</div>
+      <div>5 patterns · 3 picks</div>
+    </div>
+  </div>
+
+  <div class="question reveal">
+    Using the page data, list 3–5 <strong>patterns worth noticing</strong>, identify one high-volume opportunity, one high-conversion but lower-volume opportunity, and one underperforming or suspicious page. Explain where you would look first and why.
+  </div>
+
+  <div class="body">
+    <div class="top-grid reveal">
+      <div>
+        <ul class="editorial">
+          <li><strong>Homepage and Premium Content carry the site.</strong> Combined, 74% of sessions and 65% of MQLs. Everything else is noise at the margin.</li>
+          <li><strong>Homepage converts 3.3× lower than Premium Content on equivalent traffic.</strong> Same traffic class, 1.68% vs. 5.62%. The gap is intent capture, not audience quality.</li>
+          <li><strong>CTA design is shaping MQL <em class="accent">mix</em>, not just volume.</strong> Homepage MQLs are 77% free trials; Premium Content MQLs are 93% demos. 40× variance across pages means the CTA surface is doing more work than targeting is.</li>
+          <li><strong>AI Chat (10.28%) and PPC (10.20%) are traffic problems, not CRO problems.</strong> Both convert at ~6× site average on under 800 sessions. Optimizing chases diminishing returns; growing traffic is a separate, later bet.</li>
+          <li><strong>Zero-conversion pages are likely intent mismatches, not failures.</strong> Secure Firm Portal (322/0) is a post-purchase feature page; LSA (110/0) is informational. Counting them inflates the denominator.</li>
+        </ul>
+      </div>
+
+      <div class="picks">
+        <div class="card">
+          <div class="card-label">High-volume opportunity</div>
+          <div class="card-title">Homepage</div>
+          <div class="card-num">+360 MQLs / yr</div>
+          <div class="body-txt">Moving 1.68% → 3.0% ≈ 4.1% of total MQL volume.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">High-conversion · low-volume</div>
+          <div class="card-title">AI Chat</div>
+          <div class="card-num">10.28% @ 759</div>
+          <div class="body-txt">Scaling traffic 3× via internal links + organic ≈ 150+ incremental MQLs, zero conversion work.</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Underperforming / suspicious</div>
+          <div class="card-title">Online Payments</div>
+          <div class="card-num">0.34% @ 1,175</div>
+          <div class="body-txt">Not zero, but ~16× below Premium Content at decent volume. Worth a content + intent audit.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="look-first reveal">
+      <div class="look-first-head">Where I would look first · and why</div>
+      <p><span class="num">①</span> Session replay + heatmap on Homepage for one week — surfaces CTA visibility, scroll depth, form-abandonment points.</p>
+      <p><span class="num">②</span> Deconstruct Premium Content's above-the-fold and primary CTA pattern — direct input to the lead bet (Part 2B).</p>
+      <p><span class="num">③</span> Audit the MQL definition in Salesforce — the zero-conversion pages and 40× demo:trial variance raise a measurement question before they raise a CRO one.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="sig">Eric Broadwater</span>
+    <span>06 / 10</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 07 — PART 2B: TWO BETS
+     ============================================================ -->
+<section class="slide slide-2b" data-title="2B · Bets">
+  <div class="masthead reveal">
+    <div class="masthead-brand">Part 2B <em style="font-style: italic; color: var(--accent)">·</em> First Conversion Bets</div>
+    <div class="masthead-meta">
+      <div>Two bets · Lead with one</div>
+      <div>Hypothesis · Slice · Kill criteria</div>
+    </div>
+  </div>
+
+  <div class="question reveal">
+    Propose two conversion bets for this quarter, then choose one to lead with. For each: <strong>hypothesis, why it matters to MQL→Paid, leading indicator watched first, smallest shippable slice, kill criteria.</strong>
+  </div>
+
+  <div class="body">
+    <div class="bets-grid reveal">
+      <div class="bet lead">
+        <div class="bet-label">Lead Bet</div>
+        <h3>Homepage CTA + hero transplanted from Premium Content</h3>
+
+        <div class="field">
+          <div class="field-label">Hypothesis</div>
+          <div class="field-val">Homepage under-converts because its primary CTA is trial-weighted for an audience that arrived with research intent. Replacing hero + primary CTA with Premium Content's pattern (demo-first framing, specific benefit, adjacent social proof) will lift MQL rate <strong>≥40%</strong> without dropping trial volume by more than 15%.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Why MQL→Paid</div>
+          <div class="field-val">Demos historically close at higher rates than trials (to confirm in SFDC). Shifting mix toward demos compounds the 8→10% goal — fewer total MQLs could still beat target if close rate rises.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Leading indicator</div>
+          <div class="field-val">Demo-request rate on Homepage variant, first read at <strong>48h</strong> (directional only; significance not yet reached).</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Shippable slice</div>
+          <div class="field-val">Swap hero block + primary CTA module on <strong>50% of Homepage traffic</strong>. Secondary CTAs and footer unchanged. No below-the-fold changes.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Runtime / size</div>
+          <div class="field-val">Baseline 1.68%, MDE 0.8 pt, 80% power → <strong>~14 days at 50% traffic</strong> sufficient for detection.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Kill criteria</div>
+          <div class="field-val">Demo rate lifts &lt;20% by day 14, <em>or</em> trial rate drops &gt;30%, <em>or</em> any guardrail (tickets, early churn, discounting) breaches.</div>
+        </div>
+      </div>
+
+      <div class="bet runner">
+        <div class="bet-label">Runner-up · Run in parallel</div>
+        <h3>MQL definition + Salesforce handoff audit</h3>
+
+        <div class="field">
+          <div class="field-label">Hypothesis</div>
+          <div class="field-val">Part of the 8% baseline is measurement drift — form submissions not reaching SFDC, duplicate MQL counts, or pages mis-included in rate calc.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Why MQL→Paid</div>
+          <div class="field-val">A clean baseline makes every subsequent bet readable. Dirty data makes the Homepage bet's result ambiguous even if it wins.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Leading indicator</div>
+          <div class="field-val">Form-to-SFDC parity rate by page; MQL stage dwell time.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Shippable slice</div>
+          <div class="field-val">One-week audit by the analyst. <strong>Zero eng spend.</strong></div>
+        </div>
+        <div class="field">
+          <div class="field-label">Kill criteria</div>
+          <div class="field-val">Audit shows &lt;1pt of the 8% baseline is measurement artifact — shelf and move on.</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Why not lead</div>
+          <div class="field-val">Hygiene investment, not the quarter's growth bet. Run alongside the Homepage test.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="sig">Eric Broadwater</span>
+    <span>07 / 10</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 08 — PART 3A: PROCESS
+     5-step process + 3 reference artifacts
+     ============================================================ -->
+<section class="slide slide-3a" data-title="3A · Process">
+  <div class="masthead reveal">
+    <div class="masthead-brand">Part 3A <em style="font-style: italic; color: var(--accent)">·</em> Process</div>
+    <div class="masthead-meta">
+      <div>Intake · Triage · Work · Launch · Learn</div>
+      <div>~1 notable change / month</div>
+    </div>
+  </div>
+
+  <div class="question reveal">
+    Describe your approach: <strong>Intake, Triage, Work Breakdown, Launch Readiness, Post-Launch Learning.</strong> <em>Optional: include 1–3 templates or articles that reflect the process style you prefer.</em>
+  </div>
+
+  <div class="body">
+    <div class="process-grid reveal">
+      <div class="process-list">
+        <div class="proc-item">
+          <span class="proc-label">Intake</span>
+          All work enters through one Teams channel <strong>#growth-bets</strong>. DMs get one reply: <em>"put it in the channel with the template."</em> Required fields: problem, metric it moves, hypothesis, smallest shippable slice, proposed kill criteria. Unfilled templates are <em class="accent">prompts</em>, not bets — they go to a holding queue. Bets go to triage.
+        </div>
+        <div class="proc-item">
+          <span class="proc-label">Triage</span>
+          Weekly, against a public <strong>ICE score</strong> (Impact × Confidence × Ease, Sean Ellis). Scoring visible in Monday. Stakeholder escalations do not skip scoring. <em class="accent">"Never"</em> is a valid answer and is documented — avoids zombie-brief resurfacing.
+        </div>
+        <div class="proc-item">
+          <span class="proc-label">Work breakdown</span>
+          Maximum <strong>one active bet + one in-design bet</strong> at a time — matches the ~1-notable-change-per-month constraint. Each bet scoped to a fixed <em class="accent">appetite</em> (2 or 4 weeks), set at pitch time. If scope exceeds appetite, scope shrinks — clock does not.
+        </div>
+        <div class="proc-item">
+          <span class="proc-label">Launch readiness</span>
+          Pre-launch checklist (Part 1C) + event-parity QA. All items green before traffic cutover. Guardrail instrumentation live before variant ships.
+        </div>
+        <div class="proc-item">
+          <span class="proc-label">Post-launch learning</span>
+          <strong>Day-14 decision:</strong> continue / adjust / kill / scale. Default is kill unless data says otherwise. Results doc (win or lose) archived in Monday. <em>Losing bets are as valuable as winning ones if the learning is captured.</em>
+        </div>
+      </div>
+
+      <div class="refs">
+        <div class="refs-label">Reference artifacts</div>
+        <ol>
+          <li>
+            Brian Balfour · <a href="https://www.reforge.com/blog/growth-loops" target="_blank" rel="noopener">Growth Loops are the New Funnels</a>
+            <div class="desc">Why the team thinks in loops, not briefs.</div>
+          </li>
+          <li>
+            Ryan Singer · <a href="https://basecamp.com/shapeup" target="_blank" rel="noopener">Shape Up</a>
+            <div class="desc">Appetite-based bets, not open-ended queues.</div>
+          </li>
+          <li>
+            Adam Fishman · <a href="https://www.fishmanafnewsletter.com/p/experiment-document-template" target="_blank" rel="noopener">Creating an Experiment Doc</a>
+            <div class="desc">The 1-page artifact every bet produces.</div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="sig">Eric Broadwater</span>
+    <span>08 / 10</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 09 — PART 3B: CADENCE
+     3-forum table + meeting-cost note
+     ============================================================ -->
+<section class="slide slide-3b" data-title="3B · Cadence">
+  <div class="masthead reveal">
+    <div class="masthead-brand">Part 3B <em style="font-style: italic; color: var(--accent)">·</em> Operating Cadence</div>
+    <div class="masthead-meta">
+      <div>Weekly · Monthly · Quarterly</div>
+      <div>Every forum produces a decision</div>
+    </div>
+  </div>
+
+  <div class="question reveal">
+    Define the <strong>smallest set of recurring decision forums</strong> across weekly (team), monthly (stakeholders), quarterly (planning). For each: cadence + duration, attendees, required inputs, <strong>non-negotiable outputs</strong>. No generic ceremony names.
+  </div>
+
+  <div class="body">
+    <table class="editorial cadence reveal">
+      <thead>
+        <tr>
+          <th>Forum</th>
+          <th>Cadence</th>
+          <th>Attendees</th>
+          <th>Required inputs</th>
+          <th>Non-negotiable outputs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="width: 14%; font-family: var(--font-display); color: var(--accent); font-weight: 600; font-style: italic; font-size: clamp(0.9rem, 1.2vw, 1.1rem)">Bet Review</td>
+          <td><strong>Weekly</strong><br>45 min</td>
+          <td>PM, 2 builders, analyst, SEO</td>
+          <td>Power BI dashboard · active-bet status in Monday · guardrail readings</td>
+          <td><strong>Continue / adjust / kill</strong> decision per active bet; next week's slice owner assigned</td>
+        </tr>
+        <tr>
+          <td style="width: 14%; font-family: var(--font-display); color: var(--accent); font-weight: 600; font-style: italic; font-size: clamp(0.9rem, 1.2vw, 1.1rem)">Thesis Review</td>
+          <td><strong>Monthly</strong><br>60 min</td>
+          <td>PM, CMO, Sales + CS leads</td>
+          <td>Prior month's bet results + Power BI trend · proposed next-month bet</td>
+          <td><strong>Signed next-month bet</strong> (scope, appetite, kill criteria); ends DM-escalation as a prioritization mechanism</td>
+        </tr>
+        <tr>
+          <td style="width: 14%; font-family: var(--font-display); color: var(--accent); font-weight: 600; font-style: italic; font-size: clamp(0.9rem, 1.2vw, 1.1rem)">Thesis Lock</td>
+          <td><strong>Quarterly</strong><br>90 min</td>
+          <td>PM, CMO, CEO/CFO, Sales + CS leads</td>
+          <td>Prior quarter's bet outcomes · proposed growth thesis · data-model assumptions</td>
+          <td><strong>Written quarterly thesis:</strong> target metric, hypothesis, 3-month bet sequence, guardrails</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="cost-note reveal">
+      Every forum produces an output. Using the brief's <span class="num">$831</span>/team-hour framing: a 45-min Bet Review with 6 people ≈ <span class="num">$375</span>; a 60-min Thesis Review with 8 ≈ <span class="num">$830</span>. <strong style="font-style: normal; font-family: var(--font-body)">If the output does not justify the cost, the cadence is wrong.</strong>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="sig">Eric Broadwater</span>
+    <span>09 / 10</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 10 — PART 3C: TOOLING
+     6 bullets across Monday / Teams / Office / Power BI
+     ============================================================ -->
+<section class="slide slide-3c" data-title="3C · Tooling">
+  <div class="masthead reveal">
+    <div class="masthead-brand">Part 3C <em style="font-style: italic; color: var(--accent)">·</em> Tooling Plan</div>
+    <div class="masthead-meta">
+      <div>Monday · Teams · Office · Power BI</div>
+      <div>6 bullets · What must exist · What gets decided</div>
+    </div>
+  </div>
+
+  <div class="question reveal">
+    In 6 bullets total, explain how you would use <strong>Monday, Teams, Office, and Power BI.</strong> Make clear what boards/docs/channels must exist, what brief/decision fields are required, and <strong>when Power BI is reviewed and what decisions it drives.</strong>
+  </div>
+
+  <div class="body">
+    <div class="tool-grid reveal">
+      <div class="tool">
+        <div class="tool-label">① Monday · Bet Board</div>
+        <div class="tool-body">Not a brief board. Columns: <strong>Thesis, Hypothesis, Appetite, Slice, Status, ICE score, Kill Criteria, Day-14 Decision, Learning Doc link.</strong> Two swim lanes: In-Flight, In-Design. Losing bets archived but searchable.</div>
+      </div>
+      <div class="tool">
+        <div class="tool-label">② Monday · Intake Queue</div>
+        <div class="tool-body">All new requests land here first; cannot move to Bet Board until template is complete and triaged. <strong>The firewall against brief-factory drift.</strong></div>
+      </div>
+      <div class="tool">
+        <div class="tool-label">③ Teams · Channels</div>
+        <div class="tool-body"><strong>#growth-bets</strong> is the single working surface. <strong>#growth-stakeholders</strong> (read-only, PM-broadcast) for monthly thesis updates — kills one-to-one DM escalations.</div>
+      </div>
+      <div class="tool">
+        <div class="tool-label">④ Office · Templates</div>
+        <div class="tool-body"><strong>Word:</strong> bet brief (1 page), quarterly thesis (2 pages), post-launch results (1 page). <strong>Excel:</strong> MDE + sample-size calc, published as a reusable sheet so bets are sized consistently.</div>
+      </div>
+      <div class="tool">
+        <div class="tool-label">⑤ Power BI · One Dashboard, Four Tiles</div>
+        <div class="tool-body"><strong>MQL→Paid</strong> trend vs. 10% target · <strong>Active bet deltas</strong> vs. control · <strong>Guardrails</strong> (tickets per new customer, early churn, discount rate) · <strong>Traffic + MQLs by page.</strong></div>
+      </div>
+      <div class="tool">
+        <div class="tool-label">⑥ Power BI · Decisions It Drives</div>
+        <div class="tool-body">Reviewed <strong>weekly</strong> in Bet Review (continue/adjust/kill per bet); snapshot exported into <strong>Monthly</strong> Thesis Review (next-month bet selection) and <strong>Quarterly</strong> Thesis Lock. <em class="accent">If a decision is not traceable to a Power BI view, it is not being made on data.</em></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="sig">Eric Broadwater</span>
+    <span>10 / 10</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE CONTROLLER — nav, progress, reveal triggers, editing
+     ============================================================ -->
+<script>
+/* ===========================================
+   SlidePresentation — keyboard, scroll, touch,
+   progress bar, nav dots, reveal animations.
+   =========================================== */
+class SlidePresentation {
+  constructor() {
+    this.slides = document.querySelectorAll('.slide');
+    this.currentIndex = 0;
+    this.setupObserver();
+    this.setupNavDots();
+    this.setupKeyboard();
+    this.setupProgress();
+  }
+
+  setupObserver() {
+    // Add .visible when a slide is at least 60% in view → triggers reveal CSS
+    const opts = { threshold: 0.6 };
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          this.currentIndex = Array.from(this.slides).indexOf(e.target);
+          this.updateNavDots();
+        }
+      });
+    }, opts);
+    this.slides.forEach(s => obs.observe(s));
+  }
+
+  setupNavDots() {
+    const nav = document.getElementById('navDots');
+    this.slides.forEach((slide, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'nav-dot';
+      dot.setAttribute('aria-label', `Go to slide ${i + 1}: ${slide.dataset.title || ''}`);
+      dot.addEventListener('click', () => this.goTo(i));
+      nav.appendChild(dot);
+    });
+    this.updateNavDots();
+  }
+  updateNavDots() {
+    document.querySelectorAll('.nav-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === this.currentIndex);
+    });
+  }
+
+  setupKeyboard() {
+    document.addEventListener('keydown', (e) => {
+      // Skip nav keys while editing text
+      if (e.target.getAttribute && e.target.getAttribute('contenteditable') === 'true') return;
+
+      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault();
+        this.goTo(this.currentIndex + 1);
+      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault();
+        this.goTo(this.currentIndex - 1);
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        this.goTo(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        this.goTo(this.slides.length - 1);
+      }
+    });
+  }
+
+  goTo(i) {
+    const clamped = Math.max(0, Math.min(i, this.slides.length - 1));
+    this.slides[clamped].scrollIntoView({ behavior: 'smooth' });
+  }
+
+  setupProgress() {
+    const bar = document.getElementById('progressBar');
+    window.addEventListener('scroll', () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = (window.scrollY / total) * 100;
+      bar.style.width = pct + '%';
+    }, { passive: true });
+  }
+}
+
+/* ===========================================
+   InlineEditor — edit text in browser,
+   save to localStorage, export as HTML
+   =========================================== */
+class InlineEditor {
+  constructor() {
+    this.isActive = false;
+    this.storageKey = 'prosites_deck_content';
+    this.setupToggles();
+    this.loadFromStorage();
+  }
+
+  setupToggles() {
+    const toggle = document.getElementById('editToggle');
+    const hotzone = document.getElementById('editHotzone');
+    const bar = document.getElementById('editBar');
+    let hideTimeout = null;
+
+    // Click toggle
+    toggle.addEventListener('click', (e) => { e.stopPropagation(); this.toggle(); });
+
+    // Hotzone hover — 400ms grace period before hiding (per skill template)
+    hotzone.addEventListener('mouseenter', () => {
+      clearTimeout(hideTimeout);
+      toggle.classList.add('show');
+    });
+    hotzone.addEventListener('mouseleave', () => {
+      hideTimeout = setTimeout(() => {
+        if (!this.isActive) toggle.classList.remove('show');
+      }, 400);
+    });
+    toggle.addEventListener('mouseenter', () => { clearTimeout(hideTimeout); });
+    toggle.addEventListener('mouseleave', () => {
+      hideTimeout = setTimeout(() => {
+        if (!this.isActive) toggle.classList.remove('show');
+      }, 400);
+    });
+    hotzone.addEventListener('click', () => this.toggle());
+
+    // E key
+    document.addEventListener('keydown', (e) => {
+      const editing = e.target.getAttribute && e.target.getAttribute('contenteditable') === 'true';
+      if ((e.key === 'e' || e.key === 'E') && !editing) {
+        this.toggle();
+      }
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        this.save();
+      }
+    });
+
+    // Save / export / exit buttons in edit bar
+    document.getElementById('saveBtn').addEventListener('click', () => this.save());
+    document.getElementById('exportBtn').addEventListener('click', () => this.export());
+    document.getElementById('exitBtn').addEventListener('click', () => this.toggle());
+  }
+
+  toggle() {
+    this.isActive = !this.isActive;
+    const toggle = document.getElementById('editToggle');
+    const bar = document.getElementById('editBar');
+
+    toggle.classList.toggle('active', this.isActive);
+    toggle.classList.toggle('show', this.isActive);
+    bar.classList.toggle('show', this.isActive);
+
+    // Make text editable — target most text nodes but skip nav, labels, code
+    const selectors = 'h1, h2, h3, p, li, td, .deck, .card-title, .card-num, .body-txt, .stat-num, .stat-label, .field-val, .tool-body, .cost-note, .look-first, .refs li, .proc-item, .masthead-brand, .masthead-meta div, .question, .pull-quote';
+    document.querySelectorAll(selectors).forEach(el => {
+      el.setAttribute('contenteditable', this.isActive ? 'true' : 'false');
+    });
+
+    if (this.isActive) toggle.textContent = '✕';
+    else { toggle.textContent = '✎'; this.save(); }
+  }
+
+  save() {
+    // Serialize the body HTML to localStorage
+    try {
+      localStorage.setItem(this.storageKey, document.body.innerHTML);
+      const bar = document.getElementById('editBar');
+      const label = bar.querySelector('span');
+      const orig = label.textContent;
+      label.textContent = '✓ Saved to localStorage';
+      setTimeout(() => { label.textContent = orig; }, 1400);
+    } catch (err) {
+      console.warn('Could not save to localStorage', err);
+    }
+  }
+
+  loadFromStorage() {
+    try {
+      const saved = localStorage.getItem(this.storageKey);
+      if (saved) {
+        // Only restore if content looks plausible (contains our title)
+        if (saved.includes('Homepage Thesis')) {
+          document.body.innerHTML = saved;
+        }
+      }
+    } catch (err) { /* no-op */ }
+  }
+
+  export() {
+    // Grab current HTML and trigger download
+    const html = '<!DOCTYPE html>\n<html lang="en">\n<head>' +
+      document.head.innerHTML +
+      '</head>\n<body>' +
+      document.body.innerHTML +
+      '</body>\n</html>';
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'prosites-takehome-deck-edited.html';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+}
+
+// Boot
+window.addEventListener('DOMContentLoaded', () => {
+  new SlidePresentation();
+  new InlineEditor();
+});
+</script>
+
+</body>
+</html>
