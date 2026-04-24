@@ -2,6 +2,7 @@ module.exports = function (eleventyConfig) {
   // Ignore docs — not templates
   eleventyConfig.ignores.add("README.md");
   eleventyConfig.ignores.add("CLAUDE.md");
+  eleventyConfig.ignores.add("stuff/**");
 
   // Pass through static assets
   eleventyConfig.addPassthroughCopy("images");
