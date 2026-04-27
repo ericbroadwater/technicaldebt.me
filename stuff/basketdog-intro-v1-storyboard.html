@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BasketDog Intro V1.1 — Storyboard</title>
+
+<!-- === FONTS: Fraunces (display) + Work Sans (body) === -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* === RESET === */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* === DESIGN TOKENS === */
+  :root {
+    --bg-cream: #f5f3ee;
+    --bg-card: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: #666;
+    --text-muted: #999;
+    --accent-warm: #e07a3a;
+    --accent-warm-light: #fdf0e6;
+    --accent-sage: #5a7c6a;
+    --accent-sage-light: #e8f0eb;
+    --accent-plum: #7c5a8a;
+    --accent-plum-light: #f0e8f3;
+    --accent-sky: #4a7a9b;
+    --accent-sky-light: #e6f0f5;
+    --border: #e8e4de;
+    --border-light: #f0ece6;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+  }
+
+  body {
+    background: var(--bg-cream);
+    color: var(--text-primary);
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: clamp(24px, 4vw, 56px);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* === HEADER === */
+  .header {
+    text-align: center;
+    margin-bottom: clamp(24px, 4vw, 48px);
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--accent-warm);
+    margin: 20px auto 0;
+    border-radius: 2px;
+  }
+
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(28px, 4vw, 44px);
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+  }
+
+  .header .version {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--accent-warm);
+    font-size: clamp(14px, 1.6vw, 18px);
+    margin-top: 4px;
+  }
+
+  .header .meta {
+    display: flex;
+    justify-content: center;
+    gap: clamp(12px, 2vw, 24px);
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .meta-tag {
+    font-size: clamp(11px, 1.1vw, 13px);
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  /* === TIMELINE === */
+  .timeline {
+    display: flex;
+    margin-bottom: clamp(24px, 3vw, 40px);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    height: 36px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+  }
+
+  .timeline .phase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(9px, 1vw, 11px);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: flex 0.3s ease;
+  }
+
+  .phase-build {
+    background: var(--accent-sage-light);
+    color: var(--accent-sage);
+    flex: 11;
+  }
+  .phase-emotion {
+    background: var(--accent-plum-light);
+    color: var(--accent-plum);
+    flex: 4;
+  }
+  .phase-drop {
+    background: var(--accent-warm-light);
+    color: var(--accent-warm);
+    flex: 33;
+    font-weight: 700;
+  }
+  .phase-drop2 {
+    background: var(--accent-sky-light);
+    color: var(--accent-sky);
+    flex: 33;
+    font-weight: 600;
+  }
+  .phase-end {
+    background: var(--border-light);
+    color: var(--text-muted);
+    flex: 7;
+  }
+
+  /* === MUSIC NOTE === */
+  .music-note {
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(13px, 1.4vw, 16px);
+    color: var(--text-secondary);
+    margin-bottom: clamp(20px, 3vw, 36px);
+  }
+
+  /* === STORYBOARD GRID === */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(14px, 2vw, 24px);
+    margin-bottom: clamp(32px, 4vw, 56px);
+  }
+
+  /* === ELEMENT CARD === */
+  .element {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: clamp(12px, 1.6vw, 20px);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+
+  .element:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .element-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+
+  .element-number {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(11px, 1.2vw, 14px);
+    color: var(--accent-warm);
+  }
+
+  .element-time {
+    font-size: clamp(10px, 0.9vw, 12px);
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--bg-cream);
+    padding: 2px 8px;
+    border-radius: 12px;
+  }
+
+  .song-time {
+    font-size: clamp(9px, 0.85vw, 11px);
+    color: var(--accent-plum);
+    font-weight: 500;
+    margin-bottom: 10px;
+    letter-spacing: 0.3px;
+  }
+
+  /* === PHONE FRAME === */
+  .phone-frame {
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    background: var(--bg-cream);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(10px, 1.4vw, 18px);
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .phone-frame .shot-type {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    font-size: clamp(8px, 0.7vw, 10px);
+    color: var(--text-muted);
+    background: var(--bg-card);
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+  }
+
+  .phone-frame .visual-desc {
+    text-align: center;
+    font-size: clamp(11px, 1.1vw, 14px);
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .phone-frame .visual-desc small {
+    display: block;
+    margin-top: 4px;
+    font-size: clamp(9px, 0.85vw, 11px);
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .phone-frame .text-overlay-preview {
+    margin-top: 10px;
+    font-family: 'Fraunces', serif;
+    font-size: clamp(14px, 1.6vw, 20px);
+    font-weight: 900;
+    color: var(--text-primary);
+    text-align: center;
+  }
+
+  .phone-frame .visual-icon {
+    font-size: clamp(28px, 3vw, 40px);
+    margin-bottom: 8px;
+    opacity: 0.5;
+  }
+
+  /* === MONTAGE GRID (inside phone frame) === */
+  .montage-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 4px;
+    width: 85%;
+    aspect-ratio: 1;
+  }
+
+  .montage-grid .mini-frame {
+    background: var(--bg-card);
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(8px, 0.8vw, 10px);
+    color: var(--text-muted);
+    font-weight: 500;
+    font-style: italic;
+  }
+
+  /* === NOTES BELOW FRAME === */
+  .element-notes {
+    font-size: clamp(10px, 1vw, 12px);
+    line-height: 1.65;
+    color: var(--text-secondary);
+  }
+
+  .element-notes .label {
+    color: var(--accent-warm);
+    font-weight: 600;
+    font-size: clamp(9px, 0.85vw, 11px);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .element-notes .vo-text {
+    color: var(--accent-sage);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(10px, 1vw, 13px);
+    margin: 4px 0;
+    line-height: 1.5;
+  }
+
+  .element-notes .source {
+    color: var(--text-muted);
+    font-size: clamp(9px, 0.85vw, 11px);
+    margin-top: 4px;
+  }
+
+  .element-notes .transition {
+    color: var(--accent-plum);
+    font-size: clamp(9px, 0.85vw, 11px);
+    margin-top: 6px;
+    font-weight: 500;
+  }
+
+  /* === ELEMENT 5 — THE DROP (wide card) === */
+  .element--drop {
+    grid-column: span 2;
+    border-color: var(--accent-warm);
+    border-width: 2px;
+    position: relative;
+  }
+
+  .element--drop::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent-warm);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+
+  .drop-frames {
+    display: flex;
+    gap: clamp(8px, 1vw, 12px);
+  }
+
+  .drop-frames .phone-frame {
+    flex: 1;
+    aspect-ratio: 9 / 14;
+  }
+
+  /* beat indicator dots */
+  .beat-strip {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+    align-items: center;
+  }
+
+  .beat-strip .beat {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent-warm);
+    opacity: 0.2;
+  }
+
+  .beat-strip .beat.active { opacity: 1; }
+
+  /* === CLIP TIMING TABLE === */
+  .clip-timing {
+    width: 100%;
+    margin-top: 12px;
+    border-collapse: collapse;
+    font-size: clamp(9px, 0.85vw, 11px);
+  }
+
+  .clip-timing caption {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(10px, 1vw, 12px);
+    color: var(--accent-warm);
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding-bottom: 6px;
+  }
+
+  .clip-timing th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 8px 4px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: clamp(8px, 0.75vw, 10px);
+  }
+
+  .clip-timing td {
+    padding: 5px 8px 5px 0;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+  }
+
+  .clip-timing .clip-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    color: var(--accent-warm);
+  }
+
+  .clip-timing .clip-dur {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .clip-timing .clip-beats {
+    color: var(--accent-plum);
+    font-weight: 500;
+  }
+
+  .clip-timing .phase-accel {
+    background: var(--accent-warm-light);
+  }
+
+  .bpm-badge {
+    display: inline-block;
+    font-size: clamp(9px, 0.85vw, 11px);
+    font-weight: 600;
+    color: var(--accent-warm);
+    background: var(--accent-warm-light);
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 6px;
+  }
+
+  /* === ELEMENT 6 — WIDE CARD === */
+  .element--wide {
+    grid-column: span 2;
+  }
+
+  .wide-frames {
+    display: flex;
+    gap: clamp(8px, 1vw, 12px);
+  }
+
+  .wide-frames .phone-frame {
+    flex: 1;
+    aspect-ratio: 9 / 14;
+  }
+
+  /* === BOTTOM SECTIONS === */
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(14px, 2vw, 24px);
+    margin-top: clamp(8px, 1.5vw, 16px);
+  }
+
+  /* === PRODUCTION NOTES === */
+  .prod-notes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(10px, 1.5vw, 16px);
+  }
+
+  .prod-note {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: clamp(12px, 1.6vw, 20px);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .prod-note h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(11px, 1.1vw, 14px);
+    color: var(--accent-warm);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 8px;
+  }
+
+  .prod-note p {
+    font-size: clamp(10px, 1vw, 12px);
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* === ASSETS CHECKLIST === */
+  .assets {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: clamp(16px, 2vw, 28px);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .assets h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(14px, 1.4vw, 18px);
+    color: var(--accent-warm);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .assets h2::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 2px;
+    background: var(--accent-warm);
+    margin-top: 8px;
+    border-radius: 1px;
+  }
+
+  .assets-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 24px;
+  }
+
+  .asset-item {
+    font-size: clamp(10px, 1vw, 13px);
+    color: var(--text-secondary);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .asset-item::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* === SECTION HEADERS === */
+  .section-header {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(16px, 2vw, 22px);
+    color: var(--text-primary);
+    margin-bottom: clamp(14px, 2vw, 24px);
+    position: relative;
+    display: inline-block;
+  }
+
+  .section-header::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--accent-warm);
+    opacity: 0.4;
+    border-radius: 1px;
+  }
+
+  /* === DECORATIVE ELEMENTS === */
+  .deco-circle {
+    position: fixed;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  .deco-circle--1 {
+    width: 200px;
+    height: 200px;
+    top: -60px;
+    right: -40px;
+  }
+
+  .deco-circle--2 {
+    width: 120px;
+    height: 120px;
+    bottom: 40px;
+    left: -30px;
+  }
+
+  /* === PRINT === */
+  @media print {
+    body { padding: 20px; background: white; }
+    .element:hover { transform: none; box-shadow: var(--shadow-sm); }
+    .deco-circle { display: none; }
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 900px) {
+    .board { grid-template-columns: repeat(2, 1fr); }
+    .element--drop, .element--wide { grid-column: span 2; }
+    .prod-notes { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 580px) {
+    .board { grid-template-columns: 1fr; }
+    .element--drop, .element--wide { grid-column: span 1; }
+    .drop-frames, .wide-frames { flex-direction: column; }
+    .prod-notes { grid-template-columns: 1fr; }
+    .assets-grid { grid-template-columns: 1fr; }
+    .bottom-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Decorative shapes -->
+<div class="deco-circle deco-circle--1"></div>
+<div class="deco-circle deco-circle--2"></div>
+
+<!-- === HEADER === -->
+<div class="header">
+  <h1>BasketDog Intro</h1>
+  <div class="version">v1.1 Storyboard</div>
+  <div class="meta">
+    <span class="meta-tag">~45 sec</span>
+    <span class="meta-tag">8 Elements</span>
+    <span class="meta-tag">9:16 Portrait</span>
+    <span class="meta-tag">Reels / TikTok</span>
+  </div>
+</div>
+
+<!-- === TIMELINE === -->
+<div class="timeline">
+  <div class="phase phase-build">Verse :44–:57</div>
+  <div class="phase phase-emotion">Tension</div>
+  <div class="phase phase-drop">1st Chorus :59 — Montage</div>
+  <div class="phase phase-drop2">2nd Chorus 1:14 — Wind Down + CTA</div>
+  <div class="phase phase-end">End</div>
+</div>
+
+<div class="music-note">"My Body" by Young the Giant — starts at :44 (2nd verse), 1st drop at :59, 2nd chorus at 1:14</div>
+
+<!-- === STORYBOARD GRID === -->
+<div class="board">
+
+  <!-- ELEMENT 1 -->
+  <div class="element">
+    <div class="element-header">
+      <span class="element-number">01</span>
+      <span class="element-time">0:00–0:04</span>
+    </div>
+    <div class="song-time">Song :44–:48</div>
+    <div class="phone-frame">
+      <span class="shot-type">Close / Med</span>
+      <div class="visual-icon">🐕</div>
+      <div class="visual-desc">Oso looking at camera</div>
+      <div class="text-overlay-preview">Hi. I'm Oso</div>
+    </div>
+    <div class="element-notes">
+      <span class="label">Audio:</span> Music only (verse building)<br>
+      <span class="label">Text:</span> "Hi. I'm Oso" — pop-on, bold<br>
+      <span class="source">Source: Existing clip — Oso looking at camera</span>
+      <div class="transition">→ Spin transition to Dad</div>
+    </div>
+  </div>
+
+  <!-- ELEMENT 2 -->
+  <div class="element">
+    <div class="element-header">
+      <span class="element-number">02</span>
+      <span class="element-time">0:04–0:07</span>
+    </div>
+    <div class="song-time">Song :48–:51</div>
+    <div class="phone-frame">
+      <span class="shot-type">Medium</span>
+      <div class="visual-icon">🚲</div>
+      <div class="visual-desc">Dad + Oso together<small>Spin lands here</small></div>
+      <div class="text-overlay-preview">My Dad ↗</div>
+    </div>
+    <div class="element-notes">
+      <span class="label">Audio:</span> Music only (verse continues)<br>
+      <span class="label">Text:</span> "My Dad" + arrow — pop-on<br>
+      <span class="source">Source: You + Oso in basket or on bike</span>
+      <div class="transition">→ Cut</div>
+    </div>
+  </div>
+
+  <!-- ELEMENT 3 -->
+  <div class="element">
+    <div class="element-header">
+      <span class="element-number">03</span>
+      <span class="element-time">0:07–0:13</span>
+    </div>
+    <div class="song-time">Song :51–:57</div>
+    <div class="phone-frame">
+      <span class="shot-type">Mixed / Rapid</span>
+      <div class="montage-grid">
+        <div class="mini-frame">goofy</div>
+        <div class="mini-frame">messy</div>
+        <div class="mini-frame">cute</div>
+        <div class="mini-frame">candid</div>
+      </div>
+      <div style="margin-top:8px; font-size:clamp(9px,0.85vw,11px); color:var(--text-muted); font-style:italic;">Photo montage — 4-6 pics</div>
+    </div>
+    <div class="element-notes">
+      <span class="label">V.O.:</span>
+      <div class="vo-text">"I am a bit of a mess. But Dad says it builds character!"</div>
+      <span class="label">Text:</span> None<br>
+      <span class="source">Source: Best Oso moments — quick cuts 1-1.5s each</span>
+      <div class="transition">→ Cut / slow zoom</div>
+    </div>
+  </div>
+
+  <!-- ELEMENT 4 -->
+  <div class="element">
+    <div class="element-header">
+      <span class="element-number">04</span>
+      <span class="element-time">0:13–0:15</span>
+    </div>
+    <div class="song-time">Song :57–:59 — Pre-drop</div>
+    <div class="phone-frame">
+      <span class="shot-type">Close</span>
+      <div class="visual-icon">🤍</div>
+      <div class="visual-desc">Oso — calm, tender<small>Emotional beat. Let it breathe.</small></div>
+    </div>
+    <div class="element-notes">
+      <span class="label">V.O.:</span>
+      <div class="vo-text">"When I started losing my sight, Dad said he had an idea."</div>
+      <span class="label">Text:</span> None<br>
+      <span class="source">Source: Tender/calm Oso moment</span>
+      <div class="transition">→ Hard cut into drop</div>
+    </div>
+  </div>
+
+  <!-- ELEMENT 5 — THE DROP (1st Chorus) -->
+  <div class="element element--drop">
+    <div class="element-header">
+      <span class="element-number" style="font-size:clamp(13px,1.4vw,17px);">05 — The Drop</span>
+      <span class="element-time">0:15–0:30</span>
+    </div>
+    <div class="song-time">Song :59–1:14 — 1st Chorus / Beat Drop <span class="bpm-badge">130 BPM</span></div>
+    <div class="drop-frames">
+      <div class="phone-frame">
+        <span class="shot-type">Wide</span>
+        <div class="visual-desc">Riding — scenic SD</div>
+      </div>
+      <div class="phone-frame">
+        <span class="shot-type">Medium</span>
+        <div class="visual-desc">Oso in basket — wind in face</div>
+      </div>
+      <div class="phone-frame">
+        <span class="shot-type">Close</span>
+        <div class="visual-desc">People reacting</div>
+      </div>
+      <div class="phone-frame">
+        <span class="shot-type">Wide</span>
+        <div class="visual-desc">Best ride clip</div>
+      </div>
+    </div>
+    <div class="element-notes">
+      <span class="label">Audio:</span> Beat hits hard — no V.O., music drives everything<br>
+      <span class="label">Text:</span> None or minimal location tags<br>
+      <span class="label">Strategy:</span> Start with 4-beat cuts (1.85s), accelerate to 2-beat cuts (0.92s) to build energy
+
+      <table class="clip-timing">
+        <caption>Clip Timing Map — 130 BPM &middot; 15 seconds &middot; 8 bars</caption>
+        <thead>
+          <tr>
+            <th>Clip</th>
+            <th>Song Time</th>
+            <th>Video Time</th>
+            <th>Beats</th>
+            <th>Duration</th>
+            <th>What's On Screen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="clip-num">1</td>
+            <td>:59.0–1:00.8</td>
+            <td>0:15.0–0:16.8</td>
+            <td class="clip-beats">4 beats</td>
+            <td class="clip-dur">1.85s</td>
+            <td>Wide — riding through SD, scenic establishing shot</td>
+          </tr>
+          <tr>
+            <td class="clip-num">2</td>
+            <td>1:00.8–1:02.7</td>
+            <td>0:16.8–0:18.7</td>
+            <td class="clip-beats">4 beats</td>
+            <td class="clip-dur">1.85s</td>
+            <td>Medium — Oso in basket, wind in face, ears flapping</td>
+          </tr>
+          <tr>
+            <td class="clip-num">3</td>
+            <td>1:02.7–1:04.5</td>
+            <td>0:18.7–0:20.5</td>
+            <td class="clip-beats">4 beats</td>
+            <td class="clip-dur">1.85s</td>
+            <td>Close — people pointing/smiling/reacting on street</td>
+          </tr>
+          <tr>
+            <td class="clip-num">4</td>
+            <td>1:04.5–1:06.4</td>
+            <td>0:20.5–0:22.4</td>
+            <td class="clip-beats">4 beats</td>
+            <td class="clip-dur">1.85s</td>
+            <td>Wide — waterfront/boardwalk ride, golden hour</td>
+          </tr>
+          <tr class="phase-accel">
+            <td class="clip-num">5</td>
+            <td>1:06.4–1:07.3</td>
+            <td>0:22.4–0:23.3</td>
+            <td class="clip-beats">2 beats</td>
+            <td class="clip-dur">0.92s</td>
+            <td>Close — Oso looking around, taking it in</td>
+          </tr>
+          <tr class="phase-accel">
+            <td class="clip-num">6</td>
+            <td>1:07.3–1:08.2</td>
+            <td>0:23.3–0:24.2</td>
+            <td class="clip-beats">2 beats</td>
+            <td class="clip-dur">0.92s</td>
+            <td>Medium — you pedaling, energy shot</td>
+          </tr>
+          <tr class="phase-accel">
+            <td class="clip-num">7</td>
+            <td>1:08.2–1:09.2</td>
+            <td>0:24.2–0:25.2</td>
+            <td class="clip-beats">2 beats</td>
+            <td class="clip-dur">0.92s</td>
+            <td>Wide — landmark/bridge/skyline moment</td>
+          </tr>
+          <tr class="phase-accel">
+            <td class="clip-num">8</td>
+            <td>1:09.2–1:10.1</td>
+            <td>0:25.2–0:26.1</td>
+            <td class="clip-beats">2 beats</td>
+            <td class="clip-dur">0.92s</td>
+            <td>Close — Oso happy, tongue out</td>
+          </tr>
+          <tr class="phase-accel">
+            <td class="clip-num">9</td>
+            <td>1:10.1–1:11.0</td>
+            <td>0:26.1–0:27.0</td>
+            <td class="clip-beats">2 beats</td>
+            <td class="clip-dur">0.92s</td>
+            <td>Medium — passing a crowd, heads turning</td>
+          </tr>
+          <tr class="phase-accel">
+            <td class="clip-num">10</td>
+            <td>1:11.0–1:11.9</td>
+            <td>0:27.0–0:27.9</td>
+            <td class="clip-beats">2 beats</td>
+            <td class="clip-dur">0.92s</td>
+            <td>Wide — best overall ride clip, big finish</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="beat-strip" style="margin-top:10px;">
+        <div class="beat active"></div>
+        <div class="beat"></div>
+        <div class="beat"></div>
+        <div class="beat active"></div>
+        <div class="beat"></div>
+        <div class="beat"></div>
+        <div class="beat active"></div>
+        <div class="beat"></div>
+        <div class="beat"></div>
+        <div class="beat active"></div>
+        <div class="beat"></div>
+        <div class="beat"></div>
+        <div class="beat active"></div>
+        <div class="beat active"></div>
+        <div class="beat active"></div>
+        <div class="beat active"></div>
+        <div class="beat active"></div>
+        <div class="beat active"></div>
+      </div>
+      <div style="font-size:clamp(8px,0.75vw,10px); color:var(--text-muted); margin-top:4px;">
+        ● = cut point &nbsp;&nbsp; 4-beat spacing (clips 1-4) → accelerates to 2-beat spacing (clips 5-10)
+      </div>
+
+      <span class="source" style="margin-top:8px; display:block;">Source: 10 clips needed — mix wide/medium/close. Vary shot types for visual rhythm.</span>
+    </div>
+  </div>
+
+  <!-- ELEMENT 6 — 2nd Chorus -->
+  <div class="element element--wide">
+    <div class="element-header">
+      <span class="element-number">06</span>
+      <span class="element-time">0:30–0:37</span>
+    </div>
+    <div class="song-time">Song 1:14–1:21 — 2nd Chorus</div>
+    <div class="wide-frames">
+      <div class="phone-frame">
+        <span class="shot-type">Wide</span>
+        <div class="visual-desc">Oso in basket from behind<small>San Diego view ahead</small></div>
+      </div>
+      <div class="phone-frame">
+        <span class="shot-type">Medium</span>
+        <div class="visual-icon">🗣️</div>
+        <div class="visual-desc">Dad talking / gesturing<small>(comedy beat)</small></div>
+      </div>
+    </div>
+    <div class="element-notes">
+      <span class="label">V.O.:</span>
+      <div class="vo-text">"Now I get the best seat in the house to see San Diego. Plus it makes Dad happy... he keeps talking about eco-friendly blah blah."</div>
+      <span class="label">Text:</span> None — "blah blah" is the punchline<br>
+      <span class="source">Source: POV from behind + clip of you talking</span>
+      <div class="transition">→ Cut</div>
+    </div>
+  </div>
+
+  <!-- ELEMENT 7 — 2nd Chorus -->
+  <div class="element">
+    <div class="element-header">
+      <span class="element-number">07</span>
+      <span class="element-time">0:37–0:42</span>
+    </div>
+    <div class="song-time">Song 1:21–1:26 — 2nd Chorus</div>
+    <div class="phone-frame">
+      <span class="shot-type">Close / Med</span>
+      <div class="visual-icon">👋</div>
+      <div class="visual-desc">Oso in basket<br>looking at camera</div>
+      <div class="text-overlay-preview">SAY HI!</div>
+    </div>
+    <div class="element-notes">
+      <span class="label">V.O.:</span>
+      <div class="vo-text">"If you see us around, be sure to say hi!"</div>
+      <span class="label">Text:</span> "SAY HI!" big + bold + @basketdogsd<br>
+      <span class="source">Source: Oso looking friendly in basket</span>
+      <div class="transition">→ End frame</div>
+    </div>
+  </div>
+
+  <!-- ELEMENT 8 — End Card -->
+  <div class="element">
+    <div class="element-header">
+      <span class="element-number">08</span>
+      <span class="element-time">0:42 — hold</span>
+    </div>
+    <div class="song-time">Song 1:26+ — Music fades</div>
+    <div class="phone-frame" style="background: #faf8f4;">
+      <span class="shot-type">Static</span>
+      <div style="font-size:clamp(36px,4vw,48px); margin-bottom:8px; opacity:0.5;">🐾</div>
+      <div class="text-overlay-preview">@basketdogsd</div>
+      <div style="margin-top:4px; font-family:'Fraunces',serif; font-size:clamp(18px,2vw,24px); color:var(--accent-warm);">♥</div>
+    </div>
+    <div class="element-notes">
+      <span class="label">Audio:</span> Music fade out<br>
+      <span class="label">Visual:</span> End card — Oso doodle / logo<br>
+      <span class="source">Source: Create graphic — Oso drawing + handle</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- === BOTTOM: PRODUCTION NOTES + ASSETS === -->
+<div class="bottom-grid">
+
+  <div>
+    <div class="section-header">Production Notes</div>
+    <div class="prod-notes">
+      <div class="prod-note">
+        <h3>Music</h3>
+        <p>"My Body" — start at :44<br>Verse → 1st drop at :59 → 2nd chorus at 1:14<br>All montage cuts sync to beat (130 BPM)</p>
+      </div>
+      <div class="prod-note">
+        <h3>Pacing</h3>
+        <p>Slow build (E1-4) → fast cuts on 1st chorus (E5) → warm wind-down on 2nd chorus (E6-8)</p>
+      </div>
+      <div class="prod-note">
+        <h3>Style</h3>
+        <p>UGC native, handheld, authentic<br>Warm color — San Diego sunshine</p>
+      </div>
+      <div class="prod-note">
+        <h3>V.O.</h3>
+        <p>Oso's "voice" — friendly, goofy<br>Deadpan on "blah blah"</p>
+      </div>
+      <div class="prod-note">
+        <h3>Format</h3>
+        <p>9:16 portrait (1080x1920)<br>Pin to top of IG feed</p>
+      </div>
+      <div class="prod-note">
+        <h3>Edit In</h3>
+        <p>CapCut or Insta360 editor<br>Beat sync for E5 montage</p>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="section-header">Assets Needed</div>
+    <div class="assets">
+      <div class="assets-grid">
+        <div class="asset-item">Clip: Oso looking at camera (E1)</div>
+        <div class="asset-item">Clip: You + Oso together (E2)</div>
+        <div class="asset-item">Photos/clips: 4-6 goofy Oso moments (E3)</div>
+        <div class="asset-item">Clip: Tender/calm Oso moment (E4)</div>
+        <div class="asset-item">Clips: 10 riding/SD clips — wide, med, close mix (E5)</div>
+        <div class="asset-item">Clip: Oso in basket — scenic POV (E6)</div>
+        <div class="asset-item">Clip: You talking/gesturing (E6)</div>
+        <div class="asset-item">Clip: Oso in basket facing camera (E7)</div>
+        <div class="asset-item">Graphic: End card + @basketdogsd (E8)</div>
+        <div class="asset-item">V.O. recording: All Oso dialogue</div>
+        <div class="asset-item">Music: "My Body" trimmed from :44</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
